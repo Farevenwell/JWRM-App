@@ -1,0 +1,310 @@
+			body 
+				{
+					font-family: Arial, Helvetica, sans-serif;
+					background:  url("images/HOME_BACK.jpg") no-repeat fixed center;
+				}
+			   
+			form 
+				{
+					font-size: 24px;
+					margin-left: 30px;
+					float: left;
+					border: 18px;
+					border-radius:4px;
+				}
+
+			button 
+				{
+					background-color: aqua;
+					color: black;
+					cursor: pointer;
+					height : 100%;
+					font-size: 25px;
+				}
+
+			nav 
+				{
+					float: left;
+					opacity: 0.8;
+					border:#fedc4d 1px solid;
+					border-radius:4px;
+				  
+				}
+
+			nav h1 
+				{ 
+					list-style-type: none;
+					font-size: 18px;
+					position: relative;
+					background-color: #f1f1f1;
+				}
+
+			article 
+				{
+					float: left;
+					padding: 15px;
+				}
+
+			.label
+				{
+				font-family:Arial;
+				color:#fedc4d;
+				}
+				
+			.tblSaveForm 
+				{
+				border-top:1px #999999 solid;
+				}
+			.tableheader
+				{
+				background-color: #fedc4d;
+				left:40px;
+				}
+			.tablerow 
+				{
+				background-color: #A7D6F1;
+				color:white;
+				}
+			.btnSubmit 
+				{
+				background-color:#fd9512;
+				padding:5px;
+				border-radius:4px;
+				}
+			.message
+				{
+				color: #FF0000;
+				text-align: center;
+				width: 80%;
+				}
+			.txtField 
+				{
+				border:#fedc4d 1px solid;
+				border-radius:4px;
+				}
+			.evenRow 
+				{
+				background-color: #E2EDF9;
+				font-size:20px;
+				color:#101010;
+				}
+			.evenRow:hover 
+				{
+				background-color: #ffef46;
+				}
+			.oddRow 
+				{
+				background-color: #B3E8FF;
+				font-size:20px;
+				color:#101010;
+				}
+			.oddRow:hover 
+				{
+				background-color: #ffef46;
+				}
+			.tblListForm 
+				{
+				border-top:2px #999999 solid;
+				}
+			.listheader 
+				{
+				background-color: #fedc4d;
+				font-size:18px;
+				font-weight:bold;
+				}
+			.href
+				{
+				text-decoration:none;
+				color:#5e8fc7;
+				font-size:50px;
+				}
+
+			.nav-menu a 
+				{
+				  display: block;
+				  color: #36343a;
+				  padding: 10px 15px;
+				  transition: 0.3s;
+				  font-size: 13px;
+				  font-weight: 500;
+				  text-transform: uppercase;
+				  font-family: "Poppins", sans-serif;
+				}
+
+			.nav-menu .get-started a 
+				{
+				  background: #009970;
+				  color: #fff;
+				  border-radius: 50px;
+				  margin: 0 15px;
+				  padding: 10px 25px;
+				}
+
+			.nav-menu .drop-down ul 
+				{
+				  display: block;
+				  position: relative;
+				  left: 0;
+				  z-index: 99;
+				  opacity: 0;
+				  visibility: hidden;
+				  background: #fff;
+				  box-shadow: 0px 0px 30px rgba(127, 137, 161, 0.25);
+				}
+
+			.nav-menu .drop-down li 
+				{
+				  min-width: 10px;
+				  position: relative;
+				}
+
+			.nav-menu .drop-down ul a 
+				{	
+				  font-weight: 500;
+				  text-transform: none;
+				  color: black;
+				}
+
+			.nav-menu .drop-down ul a:hover, .nav-menu .drop-down ul .active > a, .nav-menu .drop-down ul li:hover > a 
+				{
+				  color: #009970;
+				}
+
+			.nav-menu .drop-down > a:after 
+				{
+				  content: "\ea99";
+				  font-family: IcoFont;
+				  padding-left: 50px;
+				}
+
+			.nav-menu .drop-down .drop-down ul 
+				{
+				  left: calc(100% - 30px);
+				}
+
+			.nav-menu .drop-down .drop-down:hover > ul 
+				{
+				  opacity: 1;
+				  top: 0;
+				  left: 100%;
+				}
+
+			.nav-menu .drop-down .drop-down > a 
+				{
+				  padding-right: 35px;
+				}
+
+			.nav-menu .drop-down .drop-down > a:after 
+				{
+				  content: "\eaa0";
+				  font-family: IcoFont;
+				  position: absolute;
+				  right: 15px;
+				}
+
+			@media (max-width: 1366px) 
+				{
+					.nav-menu .drop-down .drop-down ul 
+						  {
+							left: 90%;
+						  }
+					.nav-menu .drop-down .drop-down:hover > ul 
+						  {
+							left: -100%;
+						  }
+					.nav-menu .drop-down .drop-down > a:after 
+					  {
+						content: "\ea9d";
+					  }
+				}
+
+			.dropbtn 
+			{
+			  background-color: #3498DB;
+			  color: white;
+			  padding: 1px;
+			  font-size: 16px;
+			  border: none;
+			  cursor: pointer;
+			}
+
+			.dropdown {
+			  float: left;
+			  overflow: hidden;
+			}
+
+			.dropdown .dropbtn {
+			  font-size: 16px;  
+			  border: none;
+			  outline: none;
+			  color: white;
+			  padding: 14px 16px;
+			  background-color: inherit;
+			  font: inherit;
+			  margin: 0;
+			}
+
+			.navbar a:hover, .dropdown:hover .dropbtn {
+			  background-color: red;
+			}
+
+			.dropdown-content {
+			  display: none;
+			  position: absolute;
+			  background-color: #f9f9f9;
+			  width: 100%;
+			  left: 0;
+			  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+			  z-index: 1;
+			}
+
+			.dropdown-content .header {
+			  background: red;
+			  padding: 16px;
+			  color: white;
+			}
+
+			.dropdown:hover .dropdown-content {
+			  display: block;
+			}
+
+
+			.column a {
+			  float: none;
+			  color: black;
+			  padding: 16px;
+			  text-decoration: none;
+			  display: block;
+			  text-align: left;
+			}
+
+			.column a:hover {
+			  background-color: #ddd;
+			}
+
+			/* Clear floats after the columns */
+			.row:after {
+			  content: "";
+			  display: table;
+			  clear: both;
+			}
+
+			/* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
+		@media screen and (max-width:1000px) {
+		 body {font-family: Arial, Helvetica, sans-serif;
+            }
+        		
+        .btn01{
+			width: 100%;
+			  background-color: #f9f9f9;
+			}
+
+		/* Column container */
+		.row {  
+		  display: flex;
+		  flex-wrap: wrap;
+		  flex: 55%; 
+		  padding: 20px;
+		}
+
+		}

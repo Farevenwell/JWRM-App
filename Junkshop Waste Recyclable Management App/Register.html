@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Solid Waste Management System</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="scripts/css/bootstrap.min.css">
+	<link rel="stylesheet" href="scripts/css/style.css">
+	<script src="scripts/js/jquery.min.js"></script>
+	<script src="scripts/js/popper.min.js"></script>
+	<script src="scripts/js/bootstrap.min.js"></script>
+	<link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+	 <style>
+	body{
+		background-color:powderblue; 
+	}
+	</style>
+</head>
+<body>
+    <div class="container py-5" >	
+		<form id="register-form" action="api/register.php" method="POST" class="needs-validation" novalidate>
+			<center><img src="images/Profile.png" alt="userlogo" class="rounded-circle Profile"></center>
+				<h3 class="text-center ">Sign Up</h3><br>
+					<div class="form-group row regform">
+						<div class="col-sm-6 input-group mb-auto">
+								<div class="input-group-prepend icon">
+									<span class="input-group-text" id="basic-addon1"><i class='bx bxs-user-circle'></i></span>
+								</div>
+								<input type="text" class="form-control" id="user" name="user" placeholder="Username" required>
+								<div class="invalid-feedback"> <span><i class='bx bxs-error'></i></span> Fill Out Username</div>
+							</div>
+							<!------------------------------------------------------------------------------------------------>
+							<div class="col-sm-6 input-group mb-auto form1">
+								<div class="input-group-prepend icon">
+									<span class="input-group-text" id="basic-addon1"><i class='bx bxs-lock-alt' ></i></span>
+								</div>
+							<input type="password" class="form-control" id="pass" name="pass" placeholder="Password" required>
+							<div class="invalid-feedback"> <span><i class='bx bxs-error'></i></span> Fill Out Password</div>
+						</div>
+						
+							<!------------------------------------------------------------------------------------------------>
+						<div class="col-sm-6 input-group mb-auto">
+							<div class="input-group-prepend icon">
+								<span class="input-group-text" id="basic-addon1"><i class='bx bxs-user'></i></span>
+							</div>
+							<input type="text" class="form-control" id="fname" name="fname" placeholder="Firstname" required>
+							<div class="invalid-feedback"> <span><i class='bx bxs-error'></i></span> Fill Out Firstname</div>
+						</div>
+							<!------------------------------------------------------------------------------------------------>
+						<div class="col-sm-6 input-group mb-auto">
+							<div class="input-group-prepend icon">
+								<span class="input-group-text" id="basic-addon1"><i class='bx bxs-user'></i></span>
+							</div>
+								<input type="text" class="form-control" id="lname" name="lname" placeholder="Lastname" required>
+							<div class="invalid-feedback"> <span><i class='bx bxs-error'></i></span> Fill Out Lastname</div>
+						</div>
+							<!------------------------------------------------------------------------------------------------>
+						<div class="col-sm-6 input-group mb-auto">
+								<div class="input-group-prepend icon">
+									<span class="input-group-text" id="basic-addon1"><i class='bx bxs-contact'></i></span>
+								</div>
+								<input type="number" class="form-control" id="phone" name="phone" placeholder="Phone Number" required>
+							<div class="invalid-feedback"> <span><i class='bx bxs-error'></i></span> Fill Out Phone Number</div>
+						</div>
+							<!------------------------------------------------------------------------------------------------>
+						<div class="col-sm-6 input-group mb-auto">
+							<div class="input-group-prepend icon">
+								<span class="input-group-text" id="basic-addon1"><i class='bx bxs-envelope' ></i></span>
+							</div>
+							<input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+							<div class="invalid-feedback"> <span><i class='bx bxs-error'></i></span> Enter email address format: yourname@example.com</div>
+						</div>
+				</div>
+					<div class="container">
+						<div class="input-group mb-auto">
+							<button type="submit" class="btn btn-primary px-4" style="margin-top: 10px; width:100%;">Register</button>
+							<div id="login-link" class="text-left">
+								</br><p style="font-size:15px;">Already have an account? <a href="index.html" class="link" style=" text-decoration: underline;">Login Here</a></p>
+								</br>
+							</div>
+						</div>
+					</div>
+		</form>	
+		
+			<div class="container">
+				<div class="container">
+					<div class="row">
+						<div id="confirmation" class="col-sm alert alert-success invisible" style="font-size: 15px;">
+							<span><i class='bx bx-like'></i></span> Registered Successfully!
+						</div>
+					  <div id="confirmation_failed" class="col-sm alert alert-danger invisible	" style="font-size: 15px;">
+							<span><i class='bx bx-error-circle'></i></span> Username Already Exist!
+					  </div>
+					</div>
+				</div>
+			</div>
+    </div>
+	
+	
+	
+    <script>
+    (function() {
+	  
+	  'use strict';
+	  window.addEventListener('load', function() {
+		// Get the forms we want to add validation styles to
+		var forms = document.getElementsByClassName('needs-validation');
+		// Loop over them and prevent submission
+		var validation = Array.prototype.filter.call(forms, function(form) {
+		  form.addEventListener('submit', function(event) {
+			if (form.checkValidity() === false) {
+			  event.preventDefault();
+			  event.stopPropagation();
+			}
+			else {
+				event.preventDefault();
+
+                var url = "https://jwrm01.000webhostapp.com/api/register.php";
+					$.post(url, $("#register-form").serialize(), function(data) {
+					
+					if(data == 'Already Exist'){
+						$("#confirmation_failed").show();
+						$("#confirmation_failed").removeClass("invisible");
+						$("#confirmation_failed").fadeOut(5000);
+						
+					}else{
+						$("#register-form").addClass("invisible");
+						$("#confirmation").removeClass("invisible");
+						$("#confirmation").fadeOut(4000);
+						window.location.replace('index.html');
+					}
+				});
+                
+			}
+		  }, false);
+		});
+	  }, false);
+
+	})();
+	</script>
+        
+</body>
+
+</html>

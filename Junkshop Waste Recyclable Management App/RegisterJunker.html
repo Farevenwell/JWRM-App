@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Solid Waste Management System</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="scripts/css/bootstrap.min.css">
+	<link rel="stylesheet" href="scripts/css/style.css">
+	<script src="scripts/js/jquery.min.js"></script>
+	<script src="scripts/js/popper.min.js"></script>
+	<script src="scripts/js/bootstrap.min.js"></script>
+	<link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+<style>
+	body
+		{
+			background-color:powderblue; 
+		}
+	</style>
+</head>
+<script>
+      function getCookie(cName) {
+	    const name = cName + "=";
+	    const cDecoded = decodeURIComponent(document.cookie); //to be careful
+	    const cArr = cDecoded .split('; ');
+	    let res;
+	    cArr.forEach(val => {
+		  if (val.indexOf(name) === 0) res = val.substring(name.length);
+	    })
+	    return res;
+	  }
+			
+	  function eraseCookie(name) {   
+		document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+	  }
+	  var id = getCookie('id');
+	  var usr = getCookie('usr');
+	  var pwd = getCookie('pwd');
+	  var uty = getCookie('uty');
+	  
+	  //alert(usr + " " + pwd + " " + uty);
+	  $("user").val(usr);
+	  if(usr == undefined){
+	      window.location.replace('index.html');
+	  }
+
+      var params = new URLSearchParams(window.location.search);
+	  var shopid = params.get('shop_id');
+	  var addid =  params.get('addid');
+	  
+	  function Home(){
+	        window.location.href = "Junkshop.html?shop_id="+shopid+"&addid=" + addid;
+	  }
+</script>
+<body>
+	
+    <div class="container py-5" >	
+		<form id="register-form" action="api/registerjunker.php" method="POST" class="needs-validation">
+			<center><img src="images/Profile.png" alt="userlogo" class="rounded-circle Profile"></center>
+				<h3 class="text-center ">Sign Up</h3><br>
+					<div class="form-group row regform">
+					        <div class="col-sm-6 input-group mb-auto">
+    								<div class="input-group-prepend icon">
+    									<span class="input-group-text" id="basic-addon1"><i class='bx bxs-store'></i></span>
+    								</div>
+    								<input type="number" class="form-control" id="shopid" name="shopid" placeholder="Shop ID/Ref #" required>
+    							<div class="invalid-feedback"> <span><i class='bx bxs-error'></i></span> Fill out the shop id</div>
+    							<br>
+    						</div>
+							<!------------------------------------------------------------------------------->
+							<br>
+						    <div class="col-sm-6 input-group mb-auto">
+								<div class="input-group-prepend icon">
+									<span class="input-group-text" id="basic-addon1"><i class='bx bxs-user-circle'></i></span>
+								</div>
+								<input type="text" class="form-control" id="user" name="user" placeholder="Username" required>
+								<div class="invalid-feedback"> <span><i class='bx bxs-error'></i></span> Fill Out Username</div>
+							</div>
+							<!------------------------------------------------------------------------------------------------>
+							<div class="col-sm-6 input-group mb-auto form1">
+								<div class="input-group-prepend icon">
+									<span class="input-group-text" id="basic-addon1"><i class='bx bxs-lock-alt' ></i></span>
+								</div>
+							<input type="password" class="form-control" id="pass" name="pass" placeholder="Password" required>
+							<div class="invalid-feedback"> <span><i class='bx bxs-error'></i></span> Fill Out Password</div>
+						</div>
+						
+							<!------------------------------------------------------------------------------------------------>
+						<div class="col-sm-6 input-group mb-auto">
+							<div class="input-group-prepend icon">
+								<span class="input-group-text" id="basic-addon1"><i class='bx bxs-user'></i></span>
+							</div>
+							<input type="text" class="form-control" id="fname" name="fname" placeholder="Firstname" required>
+							<div class="invalid-feedback"> <span><i class='bx bxs-error'></i></span> Fill Out Firstname</div>
+						</div>
+							<!------------------------------------------------------------------------------------------------>
+						<div class="col-sm-6 input-group mb-auto">
+							<div class="input-group-prepend icon">
+								<span class="input-group-text" id="basic-addon1"><i class='bx bxs-user'></i></span>
+							</div>
+								<input type="text" class="form-control" id="lname" name="lname" placeholder="Lastname" required>
+							<div class="invalid-feedback"> <span><i class='bx bxs-error'></i></span> Fill Out Lastname</div>
+						</div>
+							<!------------------------------------------------------------------------------------------------>
+						
+				</div>
+					<div class="container">
+						<div class="input-group mb-auto">
+							<button type="submit" class="btn btn-primary px-4" style="margin-top: 10px; width:100%;">Register</button>
+						<div id="login-link" class="text-left">
+								<br><a onclick="Home()" class="link" style=" text-decoration: underline; font-size:15px;"><span><i class='bx bx-left-arrow-alt'></i></span> Go back</a>
+								</br>
+							</div>
+						</div>
+					</div>
+		</form>	
+		
+			<div class="container">
+				<div class="container">
+					<div class="row">
+						<div id="confirmation" class="col-sm alert alert-success invisible" style="font-size: 15px;">
+							<span><i class='bx bx-like'></i></span> Registered Successfully!
+						</div>
+					  <div id="confirmation_failed" class="col-sm alert alert-danger invisible	" style="font-size: 15px;">
+							<span><i class='bx bx-error-circle'></i></span> Username Already Exist!
+					  </div>
+					  <div id="confirmation_failed2" class="col-sm alert alert-danger invisible" style="font-size: 15px;">
+							<span><i class='bx bx-error-circle'></i></span> Shop ID # Not Found!
+					  </div>
+					</div>
+				</div>
+			</div>
+    </div>
+	
+	 <script>	
+    (function() {
+	  
+	  'use strict';
+	  window.addEventListener('load', function() {
+		// Get the forms we want to add validation styles to
+		var forms = document.getElementsByClassName('needs-validation');
+		// Loop over them and prevent submission
+		var validation = Array.prototype.filter.call(forms, function(form) {
+		  form.addEventListener('submit', function(event) {
+			if (form.checkValidity() === false) {
+			  event.preventDefault();
+			  event.stopPropagation();
+			}
+			else {
+				event.preventDefault();
+
+                var url = "https://jwrm01.000webhostapp.com/api/registerjunker.php";
+					$.post(url, $("#register-form").serialize(), function(data) {
+					
+					if(data == 'Already Exist'){
+						$("#confirmation_failed").show();
+						$("#confirmation_failed").removeClass("invisible");
+						$("#confirmation_failed").fadeOut(5000);
+						
+					}else if(data == 'Not Found'){
+					    $("#confirmation_failed").hide();
+					    $("#confirmation_failed2").show();
+						$("#confirmation_failed2").removeClass("invisible");
+						$("#confirmation_failed2").fadeOut(4000);
+					}else{
+						$("#register-form").addClass("invisible");
+						$("#confirmation").removeClass("invisible");
+						$("#confirmation").fadeOut(4000);
+						window.location.replace("RegisterJunker.html");
+					}
+				});
+                
+			}
+			form.classList.add('was-validated');
+		  }, false);
+		});
+	  }, false);
+
+	})();
+	</script>
+	
+   <script>
+	    $(document).ready(function(){
+          $("#logout").click(function(){
+            eraseCookie("usr");
+            eraseCookie("pwd");
+            eraseCookie("uty");
+            window.location.replace('index.html');
+          });
+          
+        });
+        
+       $('#insert').click(function(){
+           $('#itemname').val("");
+           $('#quan').val("");
+       });
+        
+	    if(uty == "Junker"){
+	       $("#mapping").hide();
+	    }
+	    if(uty == "User"){
+	       $("#Profile").hide();
+	       $("#insert").hide();
+	       $("#Register").hide();
+	    }
+		function openNav() {
+		  document.getElementById("mySidenav").style.width = "250px";
+		}
+
+		function closeNav() {
+		  document.getElementById("mySidenav").style.width = "0";
+		}
+		
+	</script>
+	
+        
+</body>
+
+</html>

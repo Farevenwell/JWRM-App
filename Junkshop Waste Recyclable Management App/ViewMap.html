@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Solid Waste Management System</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="scripts/css/bootstrap.min.css">
+	<link rel="stylesheet" href="scripts/css/style.css">
+	<script src="scripts/js/jquery.min.js"></script>
+	<script src="scripts/js/popper.min.js"></script>
+	<script src="scripts/js/bootstrap.min.js"></script>
+	<link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/fontawesome.min.css" integrity="sha384-jLKHWM3JRmfMU0A5x5AkjWkw/EYfGUAGagvnfryNV3F9VqM98XiIH7VBGVoxVSc7" crossorigin="anonymous">
+
+	
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+        integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+        crossorigin="" />
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+        integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+        crossorigin=""></script>
+	
+	<!-- Leaflet GEOLOCATION CSS CDN-->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@v0.74.0/dist/L.Control.Locate.min.css" />
+	<!-- Leaflet GEOLOCATION JS CDN-->
+	<script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@v0.74.0/dist/L.Control.Locate.min.js" charset="utf-8"></script>
+	
+	
+	<!-- routing -->
+    <link rel="stylesheet" href="scripts/js/leaflet-routing-machine.css" />
+    <script src="scripts/js/leaflet-routing-machine.js"></script>
+
+	<style>
+    		#map{
+    			height: 100vh;
+    			width: 100%;
+    		}
+    		
+    		.custom.leaflet-popup-content-wrapper{
+    			width: 250px;
+    			
+    		}
+    		.btn01{
+    			width: 100px;
+    		}
+	</style>
+</head>	
+    <script>
+      function getCookie(cName) {
+	    const name = cName + "=";
+	    const cDecoded = decodeURIComponent(document.cookie); //to be careful
+	    const cArr = cDecoded .split('; ');
+	    let res;
+	    cArr.forEach(val => {
+		  if (val.indexOf(name) === 0) res = val.substring(name.length);
+	    })
+	    return res;
+	  }
+			
+	  function eraseCookie(name) {   
+		document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+	  }
+	  var id = getCookie('id');
+	  var usr = getCookie('usr');
+	  var pwd = getCookie('pwd');
+	  var uty = getCookie('uty');
+	  
+	  //alert(usr + " " + pwd + " " + uty);
+	  $("user").val(usr);
+	  if(usr == undefined){
+	      window.location.replace('index.html');
+	  }
+	 </script>
+<body>
+    <nav class="navbar navbar-expand-sm navbar-dark">	  
+	  <span class="openbtn" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
+	  <a class="navbar-brand">
+		<img src="images/RRR.png" alt="logo" style="width:40px;">
+	  </a>
+	  <span class="navbar-text">JWRM App</span>
+	</nav>
+	
+	<div class="container-fluid bg" style="padding:0;"> 
+	<div id="mySidenav" class="sidenav">
+	  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a> 
+	  <img class="rounded-circle" src="images/maplogo.png" alt="logo">
+	  <center><h4 class="uname" style="color: white; font-family: poppin,Arial,sans-serif; margin-top: 10px;" >View Map</h4></center>
+	  <ul class="list-unstyled components mb-5">
+		<li class="active">
+			<a href="Home.html"><span><i class='bx bx-home'></i></span>  Home</a>
+		</li>
+		<li>
+		    <a onclick="locateMe()" id="locateMe" style="color:#818181;"><span><i class='bx bx-map'></i></span>  My Location</a>
+		</li>
+		<li>
+		<a id="view2" onclick="ShopRec()" style="font-size: 16px; color:#818181;"><span><i class='bx bx-info-circle'></i></span> Shop Recommendation</a>
+		</li>
+		<li>
+		<a id="view3" onclick="ShopRec2()" style="font-size: 16px; color:#818181;"><span><i class='bx bx-info-circle'></i></span> Shop Recommendation</a>
+		</li>
+		<li>
+		<a id="view1" href="#" data-toggle="modal" data-target="#ModalResults" style="font-size: 16px; color:#818181;"><span><i class='bx bx-info-circle'></i></span> Price Recommendation</a>
+		</li>
+		<li>
+		<a id="buy" href="#" style="font-size: 16px;"><span><i class='bx bxs-calculator' ></i></span> Highest Buying Price</a>
+		</li>
+		<li>
+		<a id="sell" href="#" style="font-size: 16px;"><span><i class='bx bxs-calculator' ></i></span> Lowest Selling Price</a>
+		</li>
+		<li>
+			<a id="logout" href="#"><span> <i class='bx bxs-door-open'></i></span> Sign Out</a>
+		</li>
+	  </ul>
+	</div>
+	</div>
+	
+	<!--BUY ITEM MODAL======================================================================================= -->
+	<!--BUY ITEM MODAL======================================================================================= -->
+	<!--BUY ITEM MODAL======================================================================================= -->
+	
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content" style="border:0;">
+                  <div class="modal-header" style="padding: 8px;">
+                        <p style="margin:0; padding: 5px;"><span><i class='bx bx-info-circle'></i></span> Select Item</p>
+                         <button type="button" class="close" id="checkboxclosed" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span></button>
+                 </div>
+                  <div class="modal-body">
+                          <input type="text" style="height: 30px; margin-bottom: 10px;" class="form-control" id="search" name="search" onKeyUp="searchitem()" placeholder="&#128269; Search">
+                        <ul id="buyitem" class="buyitem">
+                            
+                        </ul>
+                        <div id="error1" class="invalid-feedback"><span><i class='bx bxs-info-circle'></i></span> Select item </div>
+                  </div>
+					<center><button onclick="myselecteditem()" class="btn01 btn-primary" style="padding: 5px; width: 120px; margin-bottom:20px;">OK</button></center>
+                </div>
+            </div>
+     </div>
+     
+     <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content" style="border:0;">
+                  <div class="modal-header" style="padding: 8px;">
+                        <p style="margin:0; padding: 5px;"><span><i class='bx bx-info-circle'></i></span> Message</p>
+                 </div>
+                  <div class="modal-body">
+                        <center><p>Refreshed! Please try again </p></center>
+                  </div>
+					<center><button onclick="window.location.href='ViewMap.html'" class="btn01 btn-primary" style="padding: 5px; width: 120px; margin-bottom:20px;" data-dismiss="modal">OK</button></center>
+                </div>
+            </div>
+     </div>
+     
+     <div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content" style="border:0;">
+                  <div class="modal-header" style="padding: 8px;">
+                        <p style="margin:0; padding: 5px;"><span><i class='bx bx-calculator'></i></span> Insert Value</p>
+                 </div>
+                 <form method="POST" action="api/calculatebuyitem.php" id="buyform" enctype="multipart/form-data" class="validation" required>
+                  <div class="modal-body buyitem2">
+                  </div>
+				<a type="button" class="btn01 btn-info" style="padding: 5px; width: 110px; margin-bottom:20px; margin-left:20px; float:left;" onclick="Goback1()" href="#"><i class='bx bx-left-arrow-alt'></i>Go back</a><button type="submit" class="btn01 btn-primary" style="padding: 5px; width: 120px; margin-bottom:20px; margin-right:20px; float:right;">Calculate</button>
+                  </form>
+                </div>
+               
+            </div>
+     </div>
+     
+     <!--SELL ITEM MODAL======================================================================================= -->
+     <!--SELL ITEM MODAL======================================================================================= -->
+     <!--SELL ITEM MODAL======================================================================================= -->
+     
+	<div class="modal fade" id="myModal4" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content" style="border:0;">
+                  <div class="modal-header" style="padding: 8px;">
+                        <p style="margin:0; padding: 5px;"><span><i class='bx bx-info-circle'></i></span> Select Item</p>
+                         <button type="button" class="close" id="checkboxclosed2" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span></button>
+                 </div>
+                  <div class="modal-body">
+                       <input type="text" style="height: 30px; margin-bottom: 10px;" class="form-control" id="search2" name="search2" onKeyUp="searchitem2()" placeholder="&#128269; Search">
+                        <ul id="sellitem" class="sellitem">
+                            
+                        </ul>
+                        <div id="error1" class="invalid-feedback"><span><i class='bx bxs-info-circle'></i></span> Select item </div>
+                  </div>
+					<center><button onclick="myselecteditem2()" class="btn01 btn-primary" style="padding: 5px; width: 120px; margin-bottom:20px;">OK</button></center>
+                </div>
+            </div>
+     </div>
+	<div class="modal fade" id="myModal5" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content" style="border:0;">
+                  <div class="modal-header" style="padding: 8px;">
+                        <p style="margin:0; padding: 5px;"><span><i class='bx bx-calculator'></i></span> Insert Value</p>
+                 </div>
+                 <form method="POST" action="api/calculatesellitem.php"  class="validation2" id="sellform" required>
+                  <div class="modal-body sellitem2">
+                  </div>
+					<a type="button" class="btn01 btn-info" style="padding: 5px; width: 110px; margin-bottom:20px; margin-left:20px; float:left;" onclick="Goback2()" href="#"><i class='bx bx-left-arrow-alt'></i>Go back</a><button type="submit" class="btn01 btn-primary" style="padding: 5px; width: 110px; margin-bottom:20px; margin-right:20px; float:right;">Calculate</button>
+                  </form>
+                  
+                </div>
+               
+            </div>
+     </div>
+     
+     
+     <!--BUY/SELL RESULTS-->
+     <!--BUY/SELL RESULTS-->
+     <!--BUY/SELL RESULTS-->
+	 <div class="modal fade" id="ModalResults" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+              <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
+                <div class="modal-content" style="border:0;">
+                  <div class="modal-header" style="padding: 8px;">
+                        <p style="margin:0; padding: 5px;"><span><i class='bx bx-calculator'></i></span> Best Price Recommendation</p>
+                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span></button>
+                 </div>
+                  <div class="modal-body">
+                      <div id="itemslist" class="itemslist">
+                     
+                      </div>
+                  </div>
+					<center><button class="btn01 btn-primary" style="padding: 5px; width: 120px; margin-bottom:20px;" data-dismiss="modal">OK</button></center>
+                </div>
+               
+            </div>
+     </div>
+     
+     
+     <div class="modal fade" id="ModalResults2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+              <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered" role="document">
+                <div class="modal-content" style="border:0;">
+                  <div class="modal-header" style="padding: 8px;">
+                        <p style="margin:0; padding: 5px;"><span><i class='bx bx-calculator'></i></span> Best Shop Recommendation</p>
+                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span></button>
+                 </div>
+                  <div class="modal-body">
+                      <div id="shoplist" class="shoplist">
+                            
+                      </div>
+                  </div>
+					<center><button class="btn01 btn-primary" style="padding: 5px; width: 120px; margin-bottom:20px;" data-dismiss="modal">OK</button></center>
+                </div>
+               
+            </div>
+     </div>
+	
+	
+	
+	<div id="map" class="container-fluid" style="position:fixed;"></div>
+    
+	<script>
+		var mymap = L.map('map').setView([8.146733, 123.838316], 15);
+		
+    	var myapi = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+        maxZoom: 18,
+        id: 'mapbox/streets-v11',
+        tileSize: 512,
+        zoomOffset: -1,
+        accessToken: 'pk.eyJ1Ijoid2FzdGUwMSIsImEiOiJjbDBwYWZiOXIwb3pjM2JudGs4NWlsMTI3In0.CQ47IJ_C18wSlwODGM9hxQ'
+    }).addTo(mymap);
+	
+		//POPUP MARKER FOR JUNKSHOPS
+    
+		var customOptions =
+        {
+			'maxWidth': '250',
+			'className' : 'custom'
+        };
+		
+		//SHOP MARKER ICON
+		var shopicon = L.icon({
+			iconUrl: 'images/shopicon.png',
+			iconSize: [40, 40],
+			iconAnchor: [23, 40]
+		});
+
+		$.get("https://jwrm01.000webhostapp.com/api/itemselect.php",function(data){
+	        const item = JSON.parse(data);
+	        //console.log(item);
+            for (let i = 0; i < item.length; i++) {
+                var convertunit ="";
+                if(item[i].unit == 'per kilo'){
+                    convertunit = 'kilo';
+                }else{
+                    convertunit = item[i].unit;
+                }
+                var select = $("<li style='list-style-type: none;'><a><input type='checkbox' id='selectbuyitem' name='selectitem' style='margin-right: 5px;' value='"+item[i].Itemname+"'>"+item[i].Itemname+" ("+convertunit+")</a></li><input type='hidden' name='unitarr[]' value='"+item[i].unit+"'/>");
+				select.appendTo('.buyitem');
+            }   
+        });
+        
+        $.get("https://jwrm01.000webhostapp.com/api/itemselect2.php",function(data){
+	        const sellitem = JSON.parse(data);
+	        //console.log(item);
+            for (let i = 0; i < sellitem.length; i++) {
+                var convertunit="";
+                if(sellitem[i].unit == 'per kilo'){
+                    convertunit = 'kilo';
+                }else{
+                    convertunit = sellitem[i].unit;
+                }
+                    
+                var select2 = $("<li style='list-style-type: none;'><a><input type='checkbox' name='selectitem2' style='margin-right: 5px;' value='"+sellitem[i].Itemname+"'>"+sellitem[i].Itemname+" ("+convertunit+")</a></li><input type='hidden' name='unitarr2[]' value='"+sellitem[i].unit+"'/>");
+				select2.appendTo('.sellitem');
+            }   
+        });
+        
+        var shops="";
+		$.get("https://jwrm01.000webhostapp.com/api/junkshops.php?",function(data){
+				
+				var shop = JSON.parse(data);
+
+				for (let i = 0; i < shop.length; i++) {				
+				
+					var popup = L.popup({
+						closeOnClick: true
+					}).setContent('<img src=Admin/shop_images/'+shop[i].img+' style="width: 100%; height: 100px;">' +'</br><h5><span><i class="bx bxs-home"></i> '+shop[i].shopname+'</h5> <button onclick="Junkshop('+shop[i].shopid+','+shop[i].address+')" class="btn01 btn-primary">View Shop</button>');
+					 shops = popup;
+					 L.marker([shop[i].latitude, shop[i].longitude], {icon: shopicon}).bindPopup(popup,customOptions).addTo(mymap); 
+				
+				}
+		});
+        
+		function Junkshop(data1, data2) {
+		  window.location.href = "Junkshop.html?shop_id="+data1+"&addid="+data2;
+		}
+		
+		
+		function searchitem(){
+		    var input, filter, ul, li, e, d, txtvalue;
+		    input = document.getElementById('search');
+		    filter = input.value.toUpperCase();
+		    ul = document.getElementById("buyitem");
+		    li = ul.getElementsByTagName("li");
+            for(e = 0; e< li.length; e++){
+                d = li[e].getElementsByTagName("a")[0];
+                txtvalue = d.textContent || d.innerText;
+                if(txtvalue.toLocaleUpperCase().indexOf(filter) > -1){
+                    li[e].style.display="";
+                }else{
+                    li[e].style.display="none";
+                }
+            }
+		}
+		
+		function searchitem2(){
+		    var input, filter, ul, li, e, d, txtvalue;
+		    input = document.getElementById('search2');
+		    filter = input.value.toUpperCase();
+		    ul = document.getElementById("sellitem");
+		    li = ul.getElementsByTagName("li");
+            
+            for(e = 0; e< li.length; e++){
+                d = li[e].getElementsByTagName("a")[0];
+                txtvalue = d.textContent || d.innerText;
+                if(txtvalue.toLocaleUpperCase().indexOf(filter) > -1){
+                    li[e].style.display="";
+                }else{
+                    li[e].style.display="none";
+                }
+            }
+		}
+	
+		
+		
+		//ENTER BUY VALUE
+		function myselecteditem(){
+            var numofitem = document.getElementsByName("selectitem");
+            var unit = document.getElementsByName('unitarr[]');
+            
+            var str="";
+            $("#myModal").modal('hide');
+            for(x=0 ; x<numofitem.length; x++){
+                if(numofitem[x].checked == true){
+                    var convertunit="";
+                    if(unit[x].value == 'each'){
+                        convertunit = 'pcs';
+                    }else{
+                        convertunit = 'kilo';
+                    }
+                    
+                    var selectitem = $("<label id='label1' style='margin: 5px;'>"+numofitem[x].value+"</label><input type='hidden' id='itemvalue1'name='buyitem[]' value='"+numofitem[x].value+"'><div id='remove' class='input-group'><input type='number' id='itemvalue2' name='buyvalue[]' step='0.01' class='form-control' placeholder='Enter quantity' required><div class='input-group-append'><span style='margin: 5px;padding-left: 5px; width: 80px;'>("+convertunit+")</span></div></div>");
+			    	selectitem.appendTo('.buyitem2');
+                }
+            }
+            $("#myModal3").modal();
+		}
+		
+		
+		
+		
+		//ENTER SELL VALUE
+		function myselecteditem2(){
+            var numofitem2 = document.getElementsByName("selectitem2");
+            var unit2 = document.getElementsByName('unitarr2[]');
+            
+            var str="";
+            $("#myModal4").modal('hide');
+            for(x=0 ; x<numofitem2.length; x++){
+                if(numofitem2[x].checked == true){
+                    var convertunit="";
+                    if(unit2[x].value == 'each'){
+                        convertunit = 'pcs';
+                    }else{
+                        convertunit = 'kilo';
+                    }
+                    
+                    var selectitem2 = $("<label id='label1' style='margin: 5px;'>"+numofitem2[x].value+"</label><input type='hidden' id='itemvalue1' name='sellitem[]' value='"+numofitem2[x].value+"'><div id='remove' class='input-group'><input type='number' id='itemvalue2' name='sellvalue[]' step='0.01' class='form-control' placeholder='Enter quantity' required><div class='input-group-append'><span style='margin: 5px;padding-left: 5px; width: 80px;'>("+convertunit+")</span></div></div>");
+			    	selectitem2.appendTo('.sellitem2');
+                }
+            }
+            $("#myModal5").modal();
+		}
+		
+		function Goback1(){
+		    var numofitem2 = document.getElementsByName("selectitem");
+		    $("#myModal3").modal('hide');
+		    for(x=0 ; x<numofitem2.length; x++){
+		         if(numofitem2[x].checked == true){
+		             var myobj0 = document.getElementById("label1");
+		             var myobj1 = document.getElementById("itemvalue1");
+		             var myobj2 = document.getElementById("remove");
+		             myobj0.remove();
+                     myobj1.remove();
+                     myobj2.remove();
+		         }
+		    }
+		    $("#myModal").modal('show');
+		}
+		
+		function Goback2(){
+		    var numofitem2 = document.getElementsByName("selectitem2");
+		    $("#myModal5").modal('hide');
+		    for(x=0 ; x<numofitem2.length; x++){
+		         if(numofitem2[x].checked == true){
+		             var myobj0 = document.getElementById("label1");
+		             var myobj1 = document.getElementById("itemvalue1");
+		             var myobj2 = document.getElementById("remove");
+		             myobj0.remove();
+                     myobj1.remove();
+                     myobj2.remove();
+		         }
+		    }
+		    $("#myModal4").modal('show');
+		}
+		
+		var on = 0;
+		var on1 = 0;
+		
+		var html = "";
+		var htmlarr = [];
+		var displayshops = [];
+		function ShopRec(){
+		    var buyitem = document.getElementsByName('buyitem[]');
+		    var buyval = document.getElementsByName('buyvalue[]');
+		    const shops = ["100001", "100002", "100003", "100004", "100005", "100006", "100007"];
+		    
+		    if(on == '0'){
+		    
+		    $.get("https://jwrm01.000webhostapp.com/api/calcbuyitems.php?",function(data){
+			    var listitem = JSON.parse(data);
+			    
+			    $.get("https://jwrm01.000webhostapp.com/api/junkshops.php?",function(data){
+        		    var shopinfo = JSON.parse(data);
+        		    const comparetotal = [];
+        		    for (var i = 0; i < shops.length; i++) {
+        		        
+        		        var displayshopname = "";
+                		var displayresult = "";
+                		var totalresult = "";
+        		        var price, unit, comma, total = 0;
+        		        
+                        for(var j = 0; j < buyitem.length; j++){
+                            var earnings = 0;
+                            
+                            for(var k = 0; k < listitem.length; k++){
+                                
+                                
+                                
+                                if(shops[i] == listitem[k].shopid && buyitem[j].value == listitem[k].itemname){
+                                      var subtotal = parseFloat(buyval[j].value) * parseFloat(listitem[k].price);
+                                      earnings = parseFloat(subtotal);
+                                      price = listitem[k].price;
+                                      unit = listitem[k].unit;
+                                      if(on1  == 0){
+        				       
+                    				         displayshopname = "<p style='margin-bottom: 0;margin-top: 0px;'><b>"+shopinfo[i].shopname+"</b><span><a onclick='coord("+shopinfo[i].latitude+","+shopinfo[i].longitude+")' style='float:right; font-size: 13px; text-decoration: underline;' ><i class='bx bx-map'></i>View map</a></span></p>";
+
+                    				        on1 = on1 + 1;
+                    				  }
+                                }
+                            
+                            }
+                            
+                            if(earnings == 0){
+                                
+                            }else{
+                                earnings = parseFloat(earnings).toFixed(2)
+                                price = parseFloat(price).toFixed(2)
+                                var parseresult = " <p style='margin: 0; font-size: 12px;'>"+buyitem[j].value+" - &#8369; "+price+" "+unit+" <span style='float: right'>Qty: "+buyval[j].value+"   <b>&#8369; "+earnings.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+"</span></b></p>";
+            				    displayresult = displayresult + parseresult; 
+            				    total = parseFloat(total) + parseFloat(earnings);
+            				    comma = parseFloat(total).toFixed(2);
+                            }
+        				    
+                        }
+                         comma = parseFloat(total).toFixed(2)   
+                         var commares = comma.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                         var totalvalue = total;
+                         
+                         if(totalvalue != 0){
+                             totalresult = " <p style='margin: 0; text-decoration: overline; text-align: right; font-size: 12px; margin-bottom: 20px;'><b>Estimated Earnings: &#8369; "+commares+"</b></p>";
+                             comparetotal.push(Number(total).toFixed(2)+shops[i]);
+                         }
+                          html = $(displayshopname + displayresult + totalresult);
+                          htmlarr.push(html);
+                         // htmlarr[i].appendTo('.shoplist');
+                        
+                        on1 = 0;
+                    }
+                    
+    
+                    
+                    comparetotal.sort(function(a, b){return b - a});
+                    for(var n = 0; n<comparetotal.length; n++){
+                        var getId = "";
+                        var getindex = comparetotal[n].lastIndexOf("10000");
+                        
+                        for(var m = getindex; m < comparetotal[n].length; m++){
+                            getId += comparetotal[n].charAt(m);
+                        }
+                        
+                        displayshops.push(getId);
+                    }
+                   for(var i = 0 ; i< displayshops.length; i++){
+                            if(i < 3){
+                              var star = $("<i class='bx bxs-star' style='float: left; color: #d4dd00;'></i>");
+                              star.appendTo('.shoplist');
+                            }
+                       for(var j = 0; j< shops.length; j++){
+                          
+                           if(displayshops[i] == shops[j] ){
+                               
+                               htmlarr[j].appendTo('.shoplist');
+                           }
+                       }
+                   }
+                    
+                
+			    });
+            
+		    });
+		    
+		        $("#ModalResults2").modal();
+		        on = on + 1;
+		    }else{
+		        $("#ModalResults2").modal();
+		    }
+		    
+		   
+		}
+		
+		
+		
+		
+		
+		
+		
+
+		function ShopRec2(){
+		    var sellitem = document.getElementsByName('sellitem[]');
+		    var sellval = document.getElementsByName('sellvalue[]');
+		    const shops = ["100001", "100002", "100003", "100004", "100005", "100006", "100007"];
+		    
+		    if(on == '0'){
+		    
+		    $.get("https://jwrm01.000webhostapp.com/api/calcsellitems.php?",function(data){
+			    var listitem = JSON.parse(data);
+			    
+			    $.get("https://jwrm01.000webhostapp.com/api/junkshops.php?",function(data){
+        		    var shopinfo = JSON.parse(data);
+        		    const comparetotal = [];
+        		    for (var i = 0; i < shops.length; i++) {
+        		        
+        		        var displayshopname = "";
+                		var displayresult = "";
+                		var totalresult = "";
+        		        var price, unit, comma, total = 0;
+        		        
+                        for(var j = 0; j < sellitem.length; j++){
+                            var earnings = 0;
+                            
+                            for(var k = 0; k < listitem.length; k++){
+                                
+                                
+                                
+                                if(shops[i] == listitem[k].shopid && sellitem[j].value == listitem[k].itemname){
+                                      var subtotal = parseFloat(sellval[j].value) * parseFloat(listitem[k].price);
+                                      earnings = parseFloat(subtotal);
+                                      price = listitem[k].price;
+                                      unit = listitem[k].unit;
+                                      if(on1  == 0){
+        				       
+                    				         displayshopname = "<p style='margin-bottom: 0;margin-top: 0px;'><b>"+shopinfo[i].shopname+"</b><span><a onclick='coord("+shopinfo[i].latitude+","+shopinfo[i].longitude+")' style='float:right; font-size: 13px; text-decoration: underline;' ><i class='bx bx-map'></i>View map</a></span></p>";
+
+                    				        on1 = on1 + 1;
+                    				  }
+                                }
+                            
+                            }
+                            
+                            if(earnings == 0){
+                                
+                            }else{
+                                earnings = parseFloat(earnings).toFixed(2)
+                                price = parseFloat(price).toFixed(2)
+                                var parseresult = " <p style='margin: 0; font-size: 12px;'>"+sellitem[j].value+" - &#8369; "+price+" "+unit+" <span style='float: right'>Qty: "+sellval[j].value+"   <b>&#8369; "+earnings.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")+"</span></b></p>";
+            				    displayresult = displayresult + parseresult; 
+            				    total = parseFloat(total) + parseFloat(earnings);
+            				    comma = parseFloat(total).toFixed(2);
+                            }
+        				    
+                        }
+                         comma = parseFloat(total).toFixed(2)   
+                         var commares = comma.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                         var totalvalue = total;
+                         
+                         if(totalvalue != 0){
+                             totalresult = " <p style='margin: 0; text-decoration: overline; text-align: right; font-size: 12px; margin-bottom: 20px;'><b>Estimated Earnings: &#8369; "+commares+"</b></p>";
+                             comparetotal.push(Number(total).toFixed(2)+shops[i]);
+                         }
+                          html = $(displayshopname + displayresult + totalresult);
+                          htmlarr.push(html);
+                         // htmlarr[i].appendTo('.shoplist');
+                        
+                        on1 = 0;
+                    }
+                    
+    
+                    
+                    comparetotal.sort(function(a, b){return b - a});
+                    comparetotal.reverse();
+                    for(var n = 0; n<comparetotal.length; n++){
+                        var getId = "";
+                        var getindex = comparetotal[n].lastIndexOf("10000");
+                        
+                        for(var m = getindex; m < comparetotal[n].length; m++){
+                            getId += comparetotal[n].charAt(m);
+                        }
+                        
+                        displayshops.push(getId);
+                    }
+
+                   for(var i = 0 ; i< displayshops.length; i++){
+                       
+                       for(var j = 0; j< shops.length; j++){
+                           if(displayshops[i] == shops[j] ){
+                               htmlarr[j].appendTo('.shoplist');
+                           }
+                       }
+                   }
+                    
+                
+			    });
+            
+		    });
+		    
+		        $("#ModalResults2").modal();
+		        on = on + 1;
+		    }else{
+		        $("#ModalResults2").modal();
+		    }
+		    
+		   
+		}
+		
+
+		
+		$("#view1").hide();
+		$("#view2").hide();
+		$("#view3").hide();
+		$("#locateMe").hide();
+		var control="";
+		var mylat="";
+		var mylng="";
+		let c = 0;
+		function coord(latdata, lngdata){
+		    document.getElementById("mySidenav").style.width = "0";
+		    $("#ModalResults").modal('hide');
+		    if(c == 0){
+		        control = L.Routing.control({
+                createMarker: function() { return null; },
+                waypoints:[
+                    L.latLng(mylat,mylng),
+                    L.latLng(latdata,lngdata)
+                ]
+                }).addTo(mymap);
+                mymap.setView([latdata, lngdata], 17);
+                c = c + 1;
+		    }else{
+    		    var latlng = L.latLng(latdata, lngdata);
+    		    control.spliceWaypoints(control.getWaypoints().length - 1, 1, latlng);
+    		    mymap.setView([latdata, lngdata], 17);
+		    }
+		}
+		
+		function coord2(latdata, lngdata){
+		    document.getElementById("mySidenav").style.width = "0";
+		    $("#ModalResults").modal('hide');
+		    if(c == 0){
+		        control = L.Routing.control({
+                createMarker: function() { return null; },
+                waypoints:[
+                    L.latLng(mylat,mylng),
+                    L.latLng(latdata,lngdata)
+                ]
+                }).addTo(mymap);
+                mymap.setView([latdata, lngdata], 17)
+                c = c + 1;
+		    }else{
+    		    var latlng = L.latLng(latdata, lngdata);
+    		    control.spliceWaypoints(control.getWaypoints().length - 1, 1, latlng);
+    		    mymap.setView([latdata, lngdata], 17);
+		    }
+		}
+		
+		
+		
+		let y = 0;
+		$("#buy").click(function(){
+    		    if(y == 0){
+    		        $("#myModal").modal();
+                    y=y+1;
+                    $("#checkboxclosed").click(function(){ 
+                        y=0;
+                    });
+    		    }else{
+    		        $("#myModal").modal('hide');
+    		        $("#myModal2").modal();
+    		    }
+    		 
+        });
+        
+		$("#sell").click(function(){
+    		    if(y == 0){
+    		        $("#myModal4").modal();
+                    y=y+1;
+                    $("#checkboxclosed2").click(function(){ 
+                        y=0;
+                    });
+    		    }else{
+    		        $("#myModal4").modal('hide');
+    		        $("#myModal2").modal();
+    		    }
+    		 
+        });
+		
+		
+		//Button GPS 
+		//L.control.locate(myposition).addTo(mymap);
+       /////
+       //GEOLOCATION 
+       
+        //navigator.geolocation.getCurrentPosition(myposition)
+        var latitude="";
+        var longitude="";
+        var accuracy ="";
+        function setCookie(cName, cValue, expDays) {
+          let date = new Date();
+          date.setTime(date.getTime() + (expDays * 24 * 60 * 60 * 1000));
+          const expires = "expires=" + date.toUTCString();
+          document.cookie = cName + "=" + cValue + "; " + expires + "; path=/";
+        } 
+        
+        let x = 0; 	
+        var getlat = "8.146976";
+        var getlng = "123.839278";
+            mymap.locate({
+                setView: false,
+                watch: false
+            }) /* This will return map so you can do chaining */
+              .on('locationfound', function (e) {
+                latitude = e.latitude;
+                longitude = e.longitude;
+                mylat = e.latitude;
+                mylng = e.longitude;
+                
+                
+                var marker = L.marker([e.latitude, e.longitude]).addTo(mymap);
+                
+                var circle = L.circle([latitude, longitude],{
+                    fillColor: 'lightblue',
+                    fillOpacity: 0.5,
+                    radius: 50
+            	}).addTo(mymap);
+            	
+                
+              })
+              .on('locationerror', function (e) {
+                console.log(e);
+                alert("Location access denied.");
+                window.location.href = 'ViewMap.html';
+            });
+    
+        
+        //L.control.locate(myposition).addTo(mymap);
+        function myposition(position){
+            //INITIALIZE USER CURRENT LOCATION
+            latitude = position.coords.latitude;
+            longitude = position.coords.longitude;
+            accuracy = position.coords.accuracy;
+            mymap.setView([latitude, longitude], 17)
+            console.log("Coordinates is "+latitude+ " Longitude: "+longitude+" Accuracy: "+accuracy);
+        }     
+                   
+        function locateMe(){
+    	     document.getElementById("mySidenav").style.width = "0";
+    		 mymap.setView([latitude, longitude], 17)
+    	}
+    	
+	</script>
+    <script>
+        $(document).ready(function(){
+          $("#logout").click(function(){
+            eraseCookie("usr");
+            eraseCookie("pwd");
+            eraseCookie("uty");
+            window.location.replace('index.html');
+          });
+          
+          //$("#ModalResults").modal();
+        });
+        
+         
+         function openNav() {
+		  document.getElementById("mySidenav").style.width = "250px";
+		}
+
+		function closeNav() {
+		  document.getElementById("mySidenav").style.width = "0";
+		}
+    </script>
+    
+    <script>
+	
+    (function() {
+	  
+	  'use strict';
+		window.addEventListener('load', function() {
+			// Get the forms we want to add validation styles to
+			var forms = document.getElementsByClassName('validation');
+			// Loop over them and prevent submission
+			var validation = Array.prototype.filter.call(forms, function(form) {
+				form.addEventListener('submit', function(event) {
+				
+					event.preventDefault();
+
+					var url = "https://jwrm01.000webhostapp.com/api/calculatebuyitem.php";
+						$.post(url, $("#buyform").serialize(), function(data) {
+						var resultsample = $(data);
+			    	    resultsample.appendTo('.itemslist');
+						$("#myModal3").modal('hide');
+						$("#ModalResults").modal();
+						$("#view1").show();
+						$("#view2").show();
+						$("#locateMe").show();
+						
+					});
+					
+				}, false);
+			});
+		}, false);
+
+	})();
+	</script>
+	
+	
+	<script>
+	
+    (function() {
+	  
+	  'use strict';
+		window.addEventListener('load', function() {
+			// Get the forms we want to add validation styles to
+			var forms = document.getElementsByClassName('validation2');
+			// Loop over them and prevent submission
+			var validation = Array.prototype.filter.call(forms, function(form) {
+				form.addEventListener('submit', function(event) {
+				
+					event.preventDefault();
+
+					var url = "https://jwrm01.000webhostapp.com/api/calculatesellitem.php";
+					$.post(url, $("#sellform").serialize(), function(data) {
+                        var resultsample = $(data);
+			    	    resultsample.appendTo('.itemslist');
+                        $("#myModal5").modal('hide');
+						$("#ModalResults").modal();
+						$("#view1").show();
+						$("#view3").show();
+					    $("#locateMe").show();
+						
+					});
+					
+					
+				}, false);
+			});
+		}, false);
+
+	})();
+	
+
+	</script>
+	
+</body>
+</html>

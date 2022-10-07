@@ -1,0 +1,128 @@
+body 
+	{
+	background-size: cover;
+	background-position: center;
+	font-family:Arial;
+	font-size:30px;
+	left:5px;
+	}
+.box3 .title1 {
+    position: absolute;
+    top: 2%;
+    left: 2%;
+    width: 1145px;
+    font-size: 50px;
+    color: #12EDD0;
+}
+.box3
+	{
+		position: absolute;
+		top:6%;
+		left:44.4%;
+		transform: translate(-50%,-50%);
+		width:805px;
+		height: 82px;
+		padding: 40px;
+		background: rgba(0,0,0,.5);
+		box-shadow: 0 15px 25px rgba(0,0,0,.5);
+	}
+input 
+	{
+	font-family:Arial;
+	font-size:25px;
+	border-top:2px #999999 solid;
+	background-color:linear-gradient(rgba(0, 0, 50, 0.5), rgba(0, 0, 50, 0.5));
+	background: rgba(0,0,0,.5);
+	box-shadow: 0 15px 25px rgba(0,0,0,.5);
+	color:#12EDD0;
+	}
+label
+	{
+	font-family:Arial;
+	font-size:30px;
+	}
+.tblSaveForm 
+	{
+	border-top:2px #999999 solid;
+	background-color:linear-gradient(rgba(0, 0, 50, 0.5), rgba(0, 0, 50, 0.5));
+	background: rgba(0,0,0,.5);
+	box-shadow: 0 15px 25px rgba(0,0,0,.5);	
+	}
+.tableheader
+	{
+	background-color: #fedc4d;
+	}
+.tablerow 
+	{
+	background-color: #A7D6F1;
+	color:white;
+	}
+.btnSubmit 
+	{
+	background-color:#fd9512;
+	padding:5px;
+	border-color:#FF6600;
+	border-radius:4px;
+	color:white;
+	}
+.message
+	{
+	color: #FF0000;
+	text-align: center;
+	width: 100%;
+	}
+.txtField 
+	{
+	padding: 5px;
+	border:#fedc4d 1px solid;
+	border-radius:4px;
+	}
+.evenRow 
+	{
+	background-color: #E2EDF9;
+	font-size:20px;
+	color:#101010;
+	}
+.evenRow:hover 
+	{
+	background-color: #ffef46;
+	}
+.oddRow 
+	{
+	background-color: #B3E8FF;
+	font-size:20px;
+	color:#101010;
+	}
+.oddRow:hover 
+	{
+	background-color: #ffef46;
+	}
+.tblListForm 
+	{
+	border-top:2px #2f5c50 solid;
+	}
+.listheader 
+	{
+	background-color: #2f5c50;
+	font-size:25px;
+	font-weight:bold;
+	}
+.border1 
+	{
+		border-radius: 10px;
+		position: absolute;
+		top:3.5%;
+		left:74%;
+		height:50px;
+		width:115px;
+		font-size: 20px;
+		color:#12EDD0;	
+		background: rgba(0,0,0,.5);
+		box-shadow: 0 15px 25px rgba(0,0,0,.5);
+	}	
+.link
+	{
+	text-decoration:none;
+	color:#5e8fc7;
+	font-size:50px;
+	}

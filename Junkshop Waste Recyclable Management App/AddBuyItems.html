@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Solid Waste Management System</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="scripts/css/bootstrap.min.css">
+	<link rel="stylesheet" href="scripts/css/style.css">
+	<script src="scripts/js/jquery.min.js"></script>
+	<script src="scripts/js/popper.min.js"></script>
+	<script src="scripts/js/bootstrap.min.js"></script>
+	<script src="scripts/js/slick.min.js"></script>
+	<link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+	
+	<script>
+      function getCookie(cName) {
+	    const name = cName + "=";
+	    const cDecoded = decodeURIComponent(document.cookie); //to be careful
+	    const cArr = cDecoded .split('; ');
+	    let res;
+	    cArr.forEach(val => {
+		  if (val.indexOf(name) === 0) res = val.substring(name.length);
+	    })
+	    return res;
+	  }
+			
+	  function eraseCookie(name) {   
+		document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+	  }
+	  var id = getCookie('id');
+	  var usr = getCookie('usr');
+	  var pwd = getCookie('pwd');
+	  var uty = getCookie('uty');
+	  
+	  //alert(usr + " " + pwd + " " + uty);
+	  $("user").val(usr);
+	  if(usr == undefined){
+	      window.location.replace('index.html');
+	  }
+	  
+	  var url = document.URL;
+	  var addid = url.substring(url.lastIndexOf('=') + 1);
+	  var params = new URLSearchParams(window.location.search);
+	  var shopid =  params.get('shop_id');
+	  function viewbuyitems(){
+	      window.location.href="ViewBuyItems.html?shop_id="+ shopid+"&addid="+addid;
+	  }
+	  
+	 </script>
+</head>
+
+<body>
+	<nav class="navbar navbar-expand-sm navbar-dark">	  
+	  <span class="backbtn" style="font-size:30px;cursor:pointer" onclick="viewbuyitems()">&#8249;</span>
+	  <a class="navbar-brand">
+		<img src="images/RRR.png" alt="logo" style="width:40px;">
+	  </a>
+	  <span class="navbar-text">JWRM App</span>
+	</nav>
+	
+	<div class="container" style="height: px;">
+	<br>
+	<div class="card mb-3 cardprofile">
+		<div class="card-body">
+		<form id="additem" class="validation" method="POST" action="api/AddBuyItem.php" required>
+		         <input type="hidden" id="shopid" name="shopid">
+                 <input type="hidden" id="addid" name="addid">
+			  <div class="form-group">
+				<label for="itemname">Item Name</label>
+				<input list="items" class="form-control" id="itemname" name="itemname" placeholder="Example: Metal Scrap" required>
+				<datalist id="items">
+                  <option value="Plastic"></option>
+                  <option value="Plastic Bottles"></option>
+                  <option value="Tanduay Jr/Sr"></option>
+                  <option value="Tanduay Long Neck"></option>
+                  <option value="Kulafu"></option>
+                  <option value="Puthaw/Iron"></option>
+                  <option value="Bronze"></option>
+                  <option value="Aluminum"></option>
+                  <option value="Copper"></option>
+                  <option value="Lata/Can"></option>
+                  <option value="Karton/Carton"></option>
+                  <option value="Sin/Steel Roof"></option>
+                  <option value="Tubo/Puthaw"></option>
+                </datalist>
+			  </div>
+			  <div class="form-group">
+				<label for="unit">Item category</label>
+				<select class="form-control" id="categ" name="categ" required>
+				    <option value="0" selected>none</option>
+                    <option value="1">Plastics</option>
+                    <option value="2">Bottles</option>
+				</select>
+			  </div>
+			  <div class="form-group">
+				<label for="price">Price</label>
+				<input type="number" class="form-control" id="price" name="price" step="0.01" placeholder="Example: 1.00" required>
+			  </div>
+			  <div class="form-group">
+				<label for="unit">Select Unit</label>
+				<select class="form-control" id="unit" name="unit" required>
+                    <option value="per kilo">per kilo</option>
+                    <option value="each">each</option>
+				</select>
+			  </div>
+			  <div class="form-group">
+				<label for="txtarea">Description </label>
+				<textarea rows="4" class="form-control" id="txtarea" name="txtarea" style=" font-size: 13px;" placeholder="Example: Metal Scraps can commonly found on different appliances, construction materials or household products.  " required></textarea>
+			  </div>
+            
+			  <center><button type="submit" name="submit" id="submit" class="btn btn-primary" style="width: 100%">Save New Item</button></center>
+		</form>
+		</div>
+
+		</div>
+	</div>	
+    <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content" style="border:0;">
+                  <div class="modal-header" style="padding: 8px;">
+                        <p style="margin:0; padding: 5px;"><span><i class='bx bx-info-circle' ></i></span> Message</p>
+                  </div>
+                  <div class="modal-body">
+                        <center><p> Item added successfully!</p></center>
+                  </div>
+					<center><button onclick="viewbuyitems()" class="btn01 btn-primary" style="padding: 5px; width: 80px;margin-bottom: 10px;" data-dismiss="modal">OK</button></center>
+                </div>
+              </div>
+            </div>
+    <script>
+          var params = new URLSearchParams(window.location.search);
+    	  var shopid =  params.get('shop_id');
+    	  var addid =  params.get('addid');
+    	  $("#shopid").val(shopid);
+	      $("#addid").val(addid);
+          
+           (function() {
+	  
+    	  'use strict';
+    		window.addEventListener('load', function() {
+    			// Get the forms we want to add validation styles to
+    			var forms = document.getElementsByClassName('validation');
+    			// Loop over them and prevent submission
+    			var validation = Array.prototype.filter.call(forms, function(form) {
+    				form.addEventListener('submit', function(event) {
+    				
+    					event.preventDefault();
+    
+    					var url = "https://jwrm01.000webhostapp.com/api/AddBuyItem.php";
+    						$.post(url, $("#additem").serialize(), function(data) {
+    						if(data == 'Success'){
+    						    $('#myModal1').modal();
+    						}else{
+    							alert("Error Occured");
+    							alert(data);
+    						}
+    					});
+    					
+    				}, false);
+    			});
+    		}, false);
+    
+    	})();
+  
+    </script>
+</body>
+</html>
+

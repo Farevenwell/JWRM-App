@@ -1,0 +1,160 @@
+
+<html lang="en">
+<head>
+		<link href="images/favicon.jfif" rel="icon">
+  <title>Solid Waste Management System</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="scripts/css/bootstrap.min.css">
+  <link rel="stylesheet" href="scripts/css/style.css">
+  <script src="scripts/js/jquery.min.js"></script>
+  <script src="scripts/js/popper.min.js"></script>
+  <script src="scripts/js/bootstrap.min.js"></script>
+  <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+    	body
+        	{
+        		background-color:powderblue; 
+        	}
+	</style>
+</head>
+<body>
+    <div class="container-fluid bg" id="backg" >
+        <div id="login-row" class="row justify-content-center align-items-center">
+            <div id="login-column" class="col-md-4 loginform">
+				<div id="login-box" class="col-md-auto">
+            <center>
+                <form id="login-form" class="needs-validation" action="api/check_user.php" method="POST" novalidate> 
+					<input type="hidden" class="form-control" id="id" name="id">
+                        <img src="images/Profile.png" alt="userlogo" class="rounded-circle Profile"></br>
+                        <h3 class="text-center ">Sign In</h3><br>
+                        <div class="form-group">
+                            <div class="input-group mb-3">
+								<div class="input-group-prepend icon">
+									<span class="input-group-text" id="basic-addon1">
+									    <i class='bx bxs-user'></i>
+									</span>
+								</div>
+								<input type="text" class="form-control" id="usr" name="usr" placeholder="Username" required>
+								<div class="invalid-feedback"> <span><i class='bx bxs-error'></i></span> Please fill out Username.</div>
+						    </div>
+                        </div>
+                        <div class="form-group">
+                           <div class="input-group mb-3">
+                              <div class="input-group-prepend icon">
+                                    <span class="input-group-text" id="basic-addon1">
+                                        <i class='bx bxs-lock'></i>
+                                    </span>
+                              </div>
+                              <input type="password" class="form-control" id="pwd" name="pwd" placeholder="Password" required>
+						      <div class="invalid-feedback"> <span><i class='bx bxs-error'></i></span> Please fill out Password.</div>
+							</div>
+                        </div>
+                        <div class="form-group">
+							<center><input type="submit" name="submit" class="btn btn-primary btn-md" style="width:100%;" value="Login"></center>
+                        </div>
+                        <div id="register-link" class="text-left">
+                            <p>Don't have account yet? <a href="Register.html" class="link">Register here</a></p>
+                        </div>
+                </form>
+                </center>
+                </div>
+            </div>
+        </div>
+                
+    </div>
+	
+	
+		<!--LOGIN FEEDBACK-->
+	<div class="container">
+		<div class="container">
+			<div class="container loginFeedback">
+				<div class="row">
+				    </br></br></br></br></br></br></br></br>
+				    <div class="col-sm"></div>
+					<div id="confirmation_success" class="col-sm alert alert-success invisible">
+                		<span><i class='bx bxs-lock'></i></span> Access Granted.
+                	</div>
+				    <div class="col-sm"></div>
+					<div id="confirmation_failed" class="col-sm alert alert-danger invisible">
+						<span><i class='bx bx-error-circle'></i></span> Access Denied!
+					</div>
+				  <div class="col-sm"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script>
+	
+	  function setCookie(cName, cValue, expDays) {
+		let date = new Date();
+		date.setTime(date.getTime() + (expDays * 24 * 60 * 60 * 1000));
+		const expires = "expires=" + date.toUTCString();
+		document.cookie = cName + "=" + cValue + "; " + expires + "; path=/";
+	  }
+
+	// Disable form submissions if there are invalid fields
+	(function() {
+	  
+	  'use strict';
+	  window.addEventListener('load', function() {
+		// Get the forms we want to add validation styles to
+		var forms = document.getElementsByClassName('needs-validation');
+		// Loop over them and prevent submission
+		var validation = Array.prototype.filter.call(forms, function(form) {
+		  form.addEventListener('submit', function(event) {
+			if (form.checkValidity() === false) {
+			  event.preventDefault();
+			  event.stopPropagation();
+			}
+			else {
+				event.preventDefault();
+
+                var url = "https://jwrm01.000webhostapp.com/api/check_user.php";
+					$.post(url, $("#login-form").serialize(), function(data) {
+					
+					if(data == "Access Denied"){
+
+						$("#confirmation_failed").removeClass("invisible");
+						$("#login-column").addClass("invisible");
+						setTimeout(function(){ window.location.replace('index.html');}, 1000);
+						
+					}
+					else{
+					    if(data[0].user_type == "User"){
+							setCookie("id", data[0].account_id, 1);
+							setCookie("usr", data[0].username, 1);
+							setCookie("pwd", data[0].password, 1);
+							setCookie("uty", data[0].user_type, 1);
+							$("#login-column").addClass("invisible");
+							$("#confirmation_success").removeClass("invisible");
+							setTimeout(function(){ window.location.replace('Home.html');}, 1000);
+							
+						}else if(data[0].user_type == "Junker"){
+							
+							setCookie("id", data[0].account_id, 1);
+							setCookie("usr", data[0].username, 1);
+							setCookie("pwd", data[0].password, 1);
+							setCookie("uty", data[0].user_type, 1);
+							$("#login-column").addClass("invisible");
+							$("#confirmation_success").removeClass("invisible");
+							setTimeout(function(){ 
+								window.location.replace("Junkshop.html?shop_id="+data[1].shop_id+"&addid="+data[2].address_id);
+							
+							}, 1000);
+							
+						}
+					}
+				});
+                
+			}
+			form.classList.add('was-validated');
+		  }, false);
+		});
+	  }, false);
+
+	})();
+	</script>
+ 
+</body>
+</html>

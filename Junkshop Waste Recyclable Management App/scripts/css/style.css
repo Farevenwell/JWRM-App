@@ -1,0 +1,439 @@
+/* Login and Register Page CSS*/
+
+.bg{
+    width: 100%;
+}
+.bg1{
+    width: 100%;
+    height: 140vh;
+}
+
+.Profile{
+    height: 80px;
+	background-color:white;
+}
+
+.loginform{
+    top: 10vh;
+    position: absolute;
+    padding: 30px;
+}
+.btn{
+	width: 100px;
+}
+#register-form{
+    height:0px;
+}
+.container.py-5{
+	height:0;
+}
+h3
+{
+	color: Black;
+	font-family: georgia;
+}
+.link
+{
+	color: blue;
+}
+#usr, #pwd
+{
+	border-top-right-radius: 8px;
+	border-bottom-right-radius: 8px;
+	
+}
+.btn01{
+   width: 150px;
+}
+.btn01{
+  display: inline-block;
+  padding: 10px 15px;
+  font-size: 12px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 3px #999;
+}
+
+.btn01:active {
+  background-color: #3e8e41;
+  box-shadow: 0 2px #666;
+  transform: translateY(4px);
+}
+
+.regform{
+	margin-bottom:0px;
+}
+
+.invalid-feedback{
+	color: black;
+	background-color: #ffdbd9;
+	border-radius: 2px;
+	padding: 5px 5px;
+}
+
+/*Side Navigation Bar*/
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #000000;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 60px;
+}
+
+.sidenav a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 25px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+
+.sidenav a:hover {
+  color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+
+.openbtn {
+  color: white;
+  padding-right: 15px;
+  border: none;
+}
+#jbtn1{
+	color: black;
+}
+.sample{
+	background-color: Blue;
+}
+.navbar{
+	justify-content: flex-start;
+	background-color: #000000;
+	
+}
+
+#mySidenav ul li a{
+	padding: 15px 30px;
+	display:block;
+	border-bottom: 1px solid rgba(255,255,255,.1);
+	font-size:16px;
+	font-family: poppins,Arial,sans-serif;
+}
+
+#mySidenav  img{
+	display: block;
+	width: 100px;
+	height: 100px;
+	margin: 0 auto;
+}
+
+.carousel-caption p{
+	text-align:left;
+	padding-bottom: 0px;
+	color: white;
+	margin: 0;
+	text-shadow: 5px 5px 10px black;
+	font-size: 14px;
+	
+}
+
+.carousel-caption h5{
+	color: white;
+	text-align:left;
+	padding-bottom: 0px;
+	text-decoration: underline;
+	text-shadow: 2px 2px 7px black;
+	z-index: 0;
+	font-size: 18px;
+	font-weight: bold;
+}	
+
+.carousel-item {
+  text-align: center;
+}
+
+.jumbotron{
+	width: auto;
+}
+
+.carousel-control-prev,
+.carousel-control-next{
+	z-index:0;
+}
+/* Mapping CSS*/
+
+.backbtn {
+  color: white;
+  padding-right: 15px;
+  padding-bottom: 4px;
+  border: none;
+}
+/**/
+.offset-md-3{
+	margin-top: 20px;
+}
+.card-outline-secondary{
+	border-radius: 30px;
+	border-color: black;	
+}
+
+.card-header{
+	background-color: lightgreen;
+	border-top-right-radius: 30px;
+	border-top-left-radius: 30px;
+}
+.row.mb-1.input-group{
+	margin-left: 0px;
+}
+
+.sample1{
+	margin-top: 10px;
+	font-family: Arial;
+}
+
+
+/*User Profile CSS*/
+
+.cardprofile{
+	border-radius: 20px;
+	border: 1px solid Green;
+	background-color: #aee1f9;
+	background-image: linear-gradient(315deg, #aee1f9 0%, #f6ebe6 74%);
+
+	
+}
+form #togglepass{
+	margin-left: -15px;
+	cursor:pointer;
+}
+form .passtoggle{
+	outline:none;
+}
+form .eyecon{
+	height: 38px; 
+	width: 40px; 
+	border: 1px solid lightgrey; 
+	border-left: none; 
+	border-radius: 0px;
+	border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
+}
+
+/*CALCULATOR CSS*/
+
+
+
+#calculator {
+  width: 270px;
+  height: 270px;
+  background-color: #0078b0;
+  padding: 10px 10px 260px 10px;
+}
+
+.result {
+  width: 171px;
+  height: 40px;
+  float: left;
+  line-height: 40px;
+  background-color: #fff;
+  color: #000;
+  margin: 5px;
+}
+
+.result > .p {
+  margin-left: 10px;
+}
+
+.clear, .btncal {
+  height: 40px;
+  border-bottom: 3px solid grey;
+  border-radius: 10px;
+  text-align: center;
+  line-height: 40px;
+  cursor: pointer;
+  background-color: #ecf0f1;
+  color: #2c3e50;
+  margin: 5px;
+} 
+
+.clear {
+  width: 50px;
+  float: left;
+  background-color: #c0392b;
+  color: #fff;
+    border-color: #A63125;
+}
+
+
+
+.btncal {
+  float: left;
+  width: 50px;
+}
+.btncal:hover{
+    
+	background-color:#00BFFF;
+}
+ 
+.modal-header{
+	background-color: black;
+	color: white;
+	border: 0px solid black;
+}
+
+/*Junkshop UI CSS*/
+
+.responsive{
+	width: 100%;
+    height: auto;
+}
+
+.shopbckgrnd{
+	background-color: #00b712;
+	background-image: repeating-linear-gradient(45deg,  #95f768  20%,#5aff15 70%);
+
+}
+.shopimg{
+  position: relative;
+  text-align: center;
+  color: white;
+}
+.top-left {
+  position: absolute;
+  top: 8px;
+  left: 16px;
+}
+.bottom-right {
+  position: absolute;
+  bottom: 8px;
+  right: 16px;
+}
+.bottom-left {
+  position: absolute;
+  bottom: 8px;
+  left: 16px;
+}
+
+.info1{
+	margin: 0;
+	margin-top: 5px;
+	font-size: 12px;
+	
+}
+.junkinfo{
+	padding: 10px 10px;
+	background-color: white;
+	border-radius: 10px;
+	box-shadow: 0px 5px lightgrey; 
+	border: 1px solid lightgrey;
+}
+
+.buyitems{
+	box-sizing: border-box;
+	padding: 0px 15px;
+}
+
+@media screen and (max-width: 250px) {
+  .column {
+    width: 100%;
+  }
+}
+.column {
+  float: left;
+  width: 50%;
+  padding: 10px;
+}
+.imges{
+	height: 80px;
+	box-shadow: 0 3px lightgrey; 
+	border-radius: 10px;
+}
+
+.imges2{
+	height: 150px;
+	border-radius: 10px;
+}
+.pname{
+	color:white;
+	text-shadow: 5px 5px 5px #000;
+	font-size: 18px;
+}
+.pprice{
+	color:white;
+	text-shadow: 5px 5px 5px #000;
+	font-size: 15px;
+}
+
+.img2{
+	width:100px;
+	height: 80px;
+	border-radius: 20px;
+	box-shadow: 0 3px lightgrey;
+}
+.img3{
+	width:100px;
+	height: 70px;
+	border-radius: 5px;
+	box-shadow: 0 3px lightgrey;
+	margin-top: 5px;
+}
+.sbtitle{
+	font-size: 22px;
+	font-weight: bold;
+}
+
+.btnsettings{
+	border-radius: 8px;
+	font-size: 18px;
+	box-shadow: 0px 2px #999;
+	border: none;
+	padding: 3px 8px;
+}
+.btnsettings:active{
+	background-color: blue;
+	box-shadow: 0 2px blue;
+	transform: translateY(2px);
+}
+
+/* Clear floats after the columns */
+.row1:after {
+  content: "  ";
+  display: table;
+  clear: both;
+  
+}
+.row{
+	margin-left: 0px;
+	margin-right: 0px;
+}
+
+/*Slick carousel*/
+
+.slick-slide{
+	margin: 0px 10px;
+}
+.slick-slide img{
+	width: 100%;
+	margin-bottom: 10px;
+}

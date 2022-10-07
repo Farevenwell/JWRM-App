@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Solid Waste Management System</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="scripts/css/bootstrap.min.css">
+	<link rel="stylesheet" href="scripts/css/style.css">
+	<link rel="stylesheet" href="scripts/css/slick.css">
+	<script src="scripts/js/jquery.min.js"></script>
+	<script src="scripts/js/popper.min.js"></script>
+	<script src="scripts/js/bootstrap.min.js"></script>
+	<script src="scripts/js/slick.min.js"></script>
+	<script type="text/javascript" src="scripts/slickcarousel.js"></script>
+	<link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>	
+	<style>
+	</style>
+</head>
+	<script>
+      function getCookie(cName) {
+	    const name = cName + "=";
+	    const cDecoded = decodeURIComponent(document.cookie); //to be careful
+	    const cArr = cDecoded .split('; ');
+	    let res;
+	    cArr.forEach(val => {
+		  if (val.indexOf(name) === 0) res = val.substring(name.length);
+	    })
+	    return res;
+	  }
+			
+	  function eraseCookie(name) {   
+		document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+	  }
+	  var id = getCookie('id');
+	  var usr = getCookie('usr');
+	  var pwd = getCookie('pwd');
+	  var uty = getCookie('uty');
+	  
+	  //alert(usr + " " + pwd + " " + uty);
+	  $("user").val(usr);
+	  if(usr == undefined){
+	      window.location.replace('index.html');
+	  }
+
+	  var params = new URLSearchParams(window.location.search);
+	  var shopid = params.get('shop_id');
+	  var addid =  params.get('addid');
+	  $(document).ready(function(){
+	  
+		$.get("https://jwrm01.000webhostapp.com/api/shopinfo.php?id="+addid,function(data){
+				
+					var shopinfo = data.split("=");
+					document.getElementById("shopname").innerHTML = "<img src='Admin/shop_images/"+shopinfo[4]+"' style='width:100%;'><div class='bottom-left'> <span><i class='bx bx-home'></i></span> "+shopinfo[1]+" </div> <div class='bottom-right'><a onclick='EditShopFunction()' id='editinfo1' style='color: #FFF' > <i class='bx bx-edit'></i> <span>Edit</span></a></div><div class='top-left' style='font-size: 12px; text-shadow: 2px 1px #000000; font-weight: bold;'>Shop ID/Ref#: "+shopinfo[14]+"</div>";
+					document.getElementById("info1").innerHTML = "<span> <i class='bx bxs-map'></i> Address :</span> "+shopinfo[9]+" "+shopinfo[10]+", "+shopinfo[11];
+					document.getElementById("info2").innerHTML = "<span> <i class='bx bxs-user'></i></span> Junkshop Owner : "+shopinfo[2];
+					document.getElementById("info3").innerHTML = "<span> <i class='bx bxs-phone-call'></i></span> Contact Number: +63"+shopinfo[3].substring(1);
+					document.getElementById("info4").innerHTML = "<span> <i class='bx bx-calendar' ></i></span> Available: "+shopinfo[5]+" ~ "+shopinfo [6];
+					
+					var hours1 = shopinfo[7].split(':');
+				    var AmOrPm1 = hours1[0] >= 12 ? 'PM' : 'AM';
+				    hours1[0] = (hours1[0] % 12) || 12;
+					
+					var hours2 = shopinfo[8].split(':');
+				    var AmOrPm2 = hours2[0] >= 12 ? 'PM' : 'AM';
+				    hours2[0] = (hours2[0] % 12) || 12;
+				    
+				    document.getElementById("info5").innerHTML = "<span> <i class='bx bxs-time'></i></span> Time: " +hours1[0]+":"+hours1[1]+" "+AmOrPm1+" ~ "+ hours2[0]+":"+hours2[1]+" "+AmOrPm2;
+                    
+                    
+                    document.getElementById("navinfo").innerHTML = "<img class='rounded-circle' src='Admin/shop_images/"+shopinfo[4]+"' alt='logo'><center><h4 style='color: white;'>"+shopinfo[1]+"</h4></center> <center><a href='Junkshop.html?shop_id="+shopinfo[0]+"&addid="+shopinfo[13]+"' style='padding:0;'><span style='color: white; font-size:15px;'><i class='bx bx-home'></i> Home </span></a></center>";
+                    if(uty == "User"){
+                	   $("#editinfo1").hide();
+                	   $(".top-left").hide();
+                	}
+            			 
+        });
+			 
+		$.get("https://jwrm01.000webhostapp.com/api/viewshopsellitems.php?id="+shopid,function(data){
+		        const myArray = JSON.parse(data);
+		        if(myArray.data == ''){
+		        document.getElementById("noresult1").innerHTML = "<div class='col-sm alert alert-danger' style='font-size: 15px; margin: 0;'><span><i class='bx bx-error-circle'></i></span> No Sellable Items Available</div></br>";
+    		    }else{
+    				for (let i = 0; i < myArray.length; i++) {
+    					 $(".slider-nav").slick("slickAdd","<div class='slide'><img src='api/sellimages/"+myArray[i].image+"' class='imges2'><div class='bottom-left'><h6 class='pname'>"+myArray[i].ItemName+"<h6> <p class='pprice'><span>&#8369;</span> "+myArray[i].Price+" <span>"+myArray[i].Unit+"</span></p></div></div>");
+    					  $(".item-logo.slider").slick("slickAdd","<div class='slide'><img src='api/sellimages/"+myArray[i].image+"' class='imges'><center><h6>"+myArray[i].ItemName+"<h6></center></div>");
+    				}
+    		    }
+		});
+		
+		$.get("https://jwrm01.000webhostapp.com/api/viewshopbuyitems.php?id="+shopid,function(data){
+		    const myArray2 = JSON.parse(data);
+		    if(myArray2.data == ''){
+		        document.getElementById("noresult2").innerHTML = "<div class='col-sm alert alert-danger' style='font-size: 15px; margin: 0;'><span><i class='bx bx-error-circle'></i></span> No Buyable Items Available</div></br>";
+		    }else{	
+		        
+				for (let j = 0; j < myArray2.length; j++) {
+				
+				   
+				        
+				    if(myArray2[j].parentid == 0){
+    					var html = $("<div class='column'><center><a href='#' data-toggle='modal' data-target='#myModal"+j+"' style='color:black;'><img src='api/buyimages/"+myArray2[j].image+"' class='img2'><p>"+myArray2[j].ItemName+"</p></a></div> ");
+    					html.appendTo('.row1');
+    					var modal = $("<div class='modal' id='myModal"+j+"'><div class='modal-dialog modal-xl'><div class='modal-content'><div class='modal-header'><h4 class='modal-title'><i class='bx bxs-info-circle'></i> Info</h4><button type='button' class='close' data-dismiss='modal'>&times;</button></div><div class='modal-body row'><div class='column'><p style='margin-bottom: 0px;font-weight: bold;'>"+myArray2[j].ItemName+"</p><img src='api/buyimages/"+myArray2[j].image+"' class='img3'></div><div class='column'><br><center><p style='margin-top: 16px;font-weight: bold;'>&#8369; "+myArray2[j].Price+" "+myArray2[j].Unit+"</p></center></div><div style='padding: 0px 10px;'><p style='margin-bottom: 0px;font-weight: bold;'>Item description:</p><p style='text-align: justify;'>"+myArray2[j].ItemDesc+"</p></div></div></div></div></div>");
+    					modal.appendTo('.modallist');
+				    } else if(myArray2[j].parentid == 1){
+				        
+				        var modal = $("<div class='column'><p style='margin-bottom: 0px;font-weight: bold;'>"+myArray2[j].ItemName+"</p><img src='api/buyimages/"+myArray2[j].image+"' class='img3'></div><div class='column'><br><center><p style='margin-top: 16px;font-weight: bold;'>&#8369; "+myArray2[j].Price+" "+myArray2[j].Unit+"</p></center></div><div style='padding: 0px 10px;'><p style='margin-bottom: 0px;font-weight: bold;'>Item description:</p><p style='text-align: justify;'>"+myArray2[j].ItemDesc+"</p></div><hr style='width:100%;text-align:left;margin-left:0'>");
+				        modal.appendTo('.plastic');
+    					
+				    } else if(myArray2[j].parentid == 2){
+				        
+				        var modal = $("<div class='column'><p style='margin-bottom: 0px;font-weight: bold;'>"+myArray2[j].ItemName+"</p><img src='api/buyimages/"+myArray2[j].image+"' class='img3'></div><div class='column'><br><center><p style='margin-top: 16px;font-weight: bold;'>&#8369; "+myArray2[j].Price+" "+myArray2[j].Unit+"</p></center></div><div style='padding: 0px 10px;'><p style='margin-bottom: 0px;font-weight: bold;'>Item description:</p><p style='text-align: justify;'>"+myArray2[j].ItemDesc+"</p></div><hr style='width:100%;text-align:left;margin-left:0'>");
+				        modal.appendTo('.bottles');
+				    }
+				    
+				}
+		    }
+		});
+	});
+	
+	function EditShopFunction(){
+		window.location.href = "EditShop.html?shop_id="+shopid+"&addid=" + addid;
+	}
+	
+	function ViewBuyFunction(){
+		window.location.href = "ViewBuyItems.html?shop_id="+shopid+"&addid=" + addid;
+	}
+	
+	function ViewSellFunction(){
+		window.location.href = "ViewSellItems.html?shop_id="+shopid+"&addid=" + addid;
+	}
+	function WasteCollected(){
+		window.location.href = "WasteCollected.html?shop_id="+shopid+"&addid=" + addid;
+	}
+	function JunkerProfile(){
+		window.location.href = "JunkerProfile.html?shop_id="+shopid+"&addid=" + addid;
+	}
+	function RegisterJunker(){
+		window.location.href = "RegisterJunker.html?shop_id="+shopid+"&addid=" + addid;
+	}
+	</script>
+
+<body>
+	
+	<div id="mySidenav" class="sidenav">
+	  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a> 
+	  <div id="navinfo">
+	  
+	  </div>
+	  <ul class="list-unstyled components mb-5">
+		<li class="active">
+			<a href="ViewMap.html" id="mapping"><span><i class='bx bxs-map'></i></span> Return Map</a>
+		</li>
+		<li>
+			<a id="Register" onclick="RegisterJunker()" style="color: #818181;"> <span><i class='bx bxs-user-plus'></i></span> Register Junker</a>
+		</li>
+		<li>
+			<a id="Profile" onclick="JunkerProfile()" style="color: #818181;"><span><i class='bx bxs-user'></i></span> User Profile</a>
+		</li>
+		<li>
+			<a onclick="WasteCollected()" style="color: #818181;"><span><i class='bx bxs-box'></i></span> Waste Collected</a>
+		</li>
+		
+		<li>
+			<a id="logout" href="#"><span> <i class='bx bxs-door-open'></i></span> Sign Out</a>
+		</li>
+	  </ul>
+	</div>
+	
+	<nav class="navbar navbar-expand-sm navbar-dark">	  
+	  <span class="openbtn" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
+	  <a class="navbar-brand" >
+		<img src="images/RRR.png" alt="logo" style="width:40px;">
+	  </a>
+	  <span class="navbar-text">JWRM App</span>
+	</nav>
+	<div>
+		<div class="shopimg" id="shopname">
+
+		</div>
+		<div style="margin: 10px 10px;">
+		<div class="container junkinfo" style="background-color:#07ff07;">
+			<div class="info">
+				<p class="info1" id="info1"><span> <i class='bx bxs-map'></i> </span> Address : <i class='bx bx-loader' ></i> </p>
+				<p class="info1" id="info2"><span> <i class='bx bxs-user'></i></span> Junkshop Owner : <i class='bx bx-loader' ></i></p>
+				<p class="info1" id="info3"><span> <i class='bx bxs-phone-call'></i></span> Contact Number: <i class='bx bx-loader' ></i></p>
+				<p class="info1" id="info4"><span> <i class='bx bxs-calendar'></i></span> Available: <i class='bx bx-loader' ></i></p>
+				<p class="info1" id="info5"><span> <i class='bx bxs-time'></i></span> Time: <i class='bx bx-loader' ></i></p>
+			</div>
+		</div>
+		</div>
+		</br>
+		<div class="container slider">
+				<div>
+				<span class="sbtitle">We Sell These Items</span>    
+				<button onclick="ViewSellFunction()" type="button" id="editinfo2" class="btnsettings float-right btn-primary" style="background-color: #00eb00;"><i class='bx bx-edit' style="font-size:16px;"></i> Edit</button>
+				</div><br>
+			<section class="slider-nav">
+			
+			</section>	
+		
+			<section class="item-logo slider">
+	    
+			</section>
+			<div id="noresult1"></div>
+			
+			
+		</div>
+		
+		<div class="container buyitems">
+				<div>
+					<span class="sbtitle">We Buy These Items</span>    
+					<button onclick="ViewBuyFunction()" type="button" id="editinfo3" class="btnsettings float-right btn-primary" style="background-color: #00eb00;"><i class='bx bx-edit' style="font-size:16px;"></i> Edit</button>
+				</div></br>
+				
+				<div class="row row1">
+				    <div class='column'>
+				        <center><a href='#' data-toggle='modal' data-target='#myModalPlastic' style='color:black;'><img src='api/buyimages/item1.jpg' class='img2'><p> Plastic</p></a></center>
+				    </div>
+				    <div class='column'>
+				        <center><a href='#' data-toggle='modal' data-target='#myModalBottles' style='color:black;'><img src='api/buyimages/item2.jpg' class='img2'><p> Botilya(Bottles)</p></a></center>
+				    </div>
+				</div>
+				<div id="noresult2"></div>
+		</div>
+				
+	</div>
+	<div class='modal' id='myModalPlastic'>
+	     <div class='modal-dialog modal-xl'>
+	        <div class='modal-content'>
+	            <div class='modal-header'>
+	                <h4 class='modal-title'>
+	                    <i class='bx bxs-info-circle' ></i> Info</h4>
+	                    <button type='button' class='close' data-dismiss='modal'>&times;</button>
+	            </div>
+	            <div class='modal-body row plastic'>
+	               
+	            </div>
+	        </div>
+	    </div>
+	</div>
+	
+	<div class='modal' id='myModalBottles'>
+	     <div class='modal-dialog modal-xl'>
+	        <div class='modal-content'>
+	            <div class='modal-header'>
+	                <h4 class='modal-title'>
+	                    <i class='bx bxs-info-circle' ></i> Info</h4>
+	                    <button type='button' class='close' data-dismiss='modal'>&times;</button>
+	            </div>
+	            <div class='modal-body row bottles'>
+	                
+	            </div>
+	        </div>
+	    </div>
+	</div>
+	
+	
+	
+	<div class="modallist">
+	</div>
+	
+	<script>
+	    $(document).ready(function(){
+          $("#logout").click(function(){
+            eraseCookie("usr");
+            eraseCookie("pwd");
+            eraseCookie("uty");
+            window.location.replace('index.html');
+          });
+          
+        });
+	    
+		function openNav() {
+		  document.getElementById("mySidenav").style.width = "250px";
+		}
+
+		function closeNav() {
+		  document.getElementById("mySidenav").style.width = "0";
+		}
+		
+	  if(uty == "Junker"){
+	       $("#mapping").hide();
+	  }
+	  
+	  if(uty == "User"){
+	       $("#editinfo2").hide();
+	       $("#editinfo3").hide();
+	       $("#Profile").hide();
+	       $("#Register").hide();
+	  }
+	</script>
+	
+</body>
+</html>

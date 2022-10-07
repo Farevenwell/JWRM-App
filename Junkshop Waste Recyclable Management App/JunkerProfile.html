@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Solid Waste Management System</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="scripts/css/bootstrap.min.css">
+	<link rel="stylesheet" href="scripts/css/style.css">
+	<script src="scripts/js/jquery.min.js"></script>
+	<script src="scripts/js/popper.min.js"></script>
+	<script src="scripts/js/bootstrap.min.js"></script>
+	<link href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css' rel='stylesheet'>
+	<link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+</head>
+
+	<script>
+      function getCookie(cName) {
+	    const name = cName + "=";
+	    const cDecoded = decodeURIComponent(document.cookie); //to be careful
+	    const cArr = cDecoded .split('; ');
+	    let res;
+	    cArr.forEach(val => {
+		  if (val.indexOf(name) === 0) res = val.substring(name.length);
+	    })
+	    return res;
+	  }
+			
+	  function eraseCookie(name) {   
+		document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+	  }
+	  var id = getCookie('id');
+	  var usr = getCookie('usr');
+	  var pwd = getCookie('pwd');
+	  var uty = getCookie('uty');
+	  
+	  
+	  //alert(usr + " " + pwd + " " + uty);
+	  $("user").val(usr);
+	  if(usr == undefined){
+	      window.location.replace('index.html');
+	  }
+	  
+	  $(document).ready(function(){
+		 $(".uname").text(usr);
+		 $("#checkpass").val(pwd);
+		 $("#accid").val(id);
+		 $( ".close" ).click(function() {
+		     $("#oldpass").val("");
+		     $("#newpass").val("");
+		     $("#conpass").val("");
+                
+         });
+	  });
+	  
+	    var params = new URLSearchParams(window.location.search);
+	    var shopid = params.get('shop_id');
+	    var addid =  params.get('addid');
+	    $.get("https://jwrm01.000webhostapp.com/api/shopinfo.php?id="+addid,function(data){
+	        
+					var shopinfo = data.split("=");
+                    document.getElementById("navinfo").innerHTML = "<img class='rounded-circle' src='Admin/shop_images/"+shopinfo[4]+"' alt='logo'><center><h4 style='color: white;'>"+shopinfo[1]+"</h4></center> <center><a href='Junkshop.html?shop_id="+shopinfo[0]+"&addid="+shopinfo[13]+"' style='padding:0;'><span style='color: white; font-size:15px;'><i class='bx bx-home'></i> Home </span></a></center>";
+                    	$("#shopname").text(shopinfo[1]);
+        });
+        
+        $.get("https://jwrm01.000webhostapp.com/api/JunkerProfile.php?id="+id,function(data){
+				
+					var userinfo = data.split("=");
+					$(".fname").text(userinfo[0]);
+					$(".lname").text(userinfo[1]);
+					$("#usr").text(userinfo[2]);
+					$(".pass").val(userinfo[3]);
+
+			 
+		});
+        function WasteCollected(){
+		window.location.href = "WasteCollected.html?shop_id="+shopid+"&addid=" + addid;
+    	}
+    	function JunkerProfile(){
+		window.location.href = "JunkerProfile.html?shop_id="+shopid+"&addid=" + addid;
+    	}
+    	function RegisterJunker(){
+		    window.location.href = "RegisterJunker.html?shop_id="+shopid+"&addid=" + addid;
+	    }
+    	
+    	function logout(){
+	    	eraseCookie("usr");
+            eraseCookie("pwd");
+            eraseCookie("uty");
+            window.location.replace('index.html');
+    	}
+	  
+  </script>
+<body>
+    <nav class="navbar navbar-expand-sm navbar-dark">	  
+	  <span class="openbtn" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
+	  <a class="navbar-brand" >
+		<img src="images/RRR.png" alt="logo" style="width:40px;">
+	  </a>
+	  <span class="navbar-text">JWRM App</span>
+	</nav>
+	
+	<div id="mySidenav" class="sidenav">
+	  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a> 
+	  <div id="navinfo">
+	  
+	  </div>
+	  <ul class="list-unstyled components mb-5">
+		<li>
+			<a id="Register" onclick="RegisterJunker()" style="color: #818181;"> <span><i class='bx bxs-user-plus'></i></span> Register Junker</a>
+		</li>
+		<li>
+			<a onclick="JunkerProfile()" style="color: #818181;"><span><i class='bx bxs-user'></i></span> User Profile</a>
+		</li>
+		<li>
+			<a onclick="WasteCollected()" style="color: #818181;"><span><i class='bx bxs-box'></i></span> Waste Collected</a>
+		</li>
+		<li>
+			<a id="logout" href="#"><span> <i class='bx bxs-door-open'></i></span> Sign Out</a>
+		</li>
+	  </ul>
+	</div>
+	
+	
+	<input type="hidden" class="form-control" id="acc_id" name="acc_id">
+		<div class="container bg"><br>
+			<div class="card cardprofile">
+				<div class="card-body">
+					<div class="d-flex flex-column align-items-center text-center">
+						<img src="images/Profile.png"  class="rounded-circle p-1 " width="110">
+							<div class="mt-3">
+								<h4 class="uname"></h4>
+								<div class="row">
+								<div id="fname" class="text-secondary" style="margin-left:auto; padding-right: 5px;">Shop</div>
+								<div id="lname" class="text-secondary" style="margin-right: auto;">Junker</div>
+								</div>
+							</div>
+					</div>
+				
+					<div class="row">
+						<div class="col-sm-3">
+							<h6 class="mb-0">Name</h6>
+						</div>
+						<div class="col-sm-9 text-secondary row">
+						    
+							<div class="fname" style="margin-right: 5px;">
+							 <i class="fa fa-spinner fa-spin" style="font-size:18px;"></i>
+							</div>
+							<div class="lname"></div>
+						</div>
+					</div>
+					<hr>
+					<div class="row">
+						<div class="col-sm-3">
+							<h6 class="mb-0">Username</h6>
+						</div>
+						<div id="usr" class="col-sm-9 text-secondary">
+						      <i class="fa fa-spinner fa-spin" style="font-size:18px"></i>
+						</div>
+					</div>
+					<hr>
+					<div class="row">
+						<div class="col-sm-3">
+							<h6 class="mb-0">Password</h6>
+						</div>
+						<div class="col-sm-9 text-secondary row">
+						<input type="password" class="pass fas fa" id="pass" style="border: none; width: 70%; background-color: transparent;" placeholder="&#xf110;" disabled><a data-target="#myModal" data-toggle="modal" style="font-size: 14px; float: right; width: 30%;">Change <span><i class='bx bxs-edit'></i></span></a>
+						</div>
+					</div>
+					<hr>
+					<div class="row">
+						<div class="col-sm-3">
+							<h6 class="mb-0">Shop Registered</h6>
+						</div>
+						<div id="shopname" class="col-sm-9 text-secondary">
+						      <i class="fa fa-spinner fa-spin" style="font-size:18px;"></i>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+		<br>
+		
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" style="border:0;width: 280px;margin: auto;">
+          <div class="modal-header">
+            <h6 class="modal-title" id="exampleModalLongTitle">Change password</h6>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+                <form id="passform" method="POST" action="api/changepassword.php" class="validation">
+                    <input type="hidden" id="accid" name="accid">
+                    <input type="hidden" id="checkpass" name="checkpass">
+                    <label style="margin-top: 10px;">Old password</label>
+                    <input type="password" id="oldpass" name="oldpass" class="form-control" placeholder="Enter old password" required>
+                    <div id="currentpassword" class="invalid-feedback"><span><i class='bx bxs-info-circle'></i></span> Enter your current password.</div>
+                    <label style="margin-top: 10px;">New password</label>
+                    <input type="password" id="newpass" name="newpass" class="form-control" placeholder="Enter new password" required>
+                    <div id="newpassword1" class="invalid-feedback"><span><i class='bx bxs-info-circle'></i></span> Password does not match</div>
+                    <label style="margin-top: 10px;">Confirm password</label>
+                    <input type="password" id="conpass" name="conpass" class="form-control" placeholder="Confirm new password" required>
+                    <div id="newpassword2" class="invalid-feedback"><span><i class='bx bxs-info-circle'></i></span> Password does not match</div>
+                    <button type="submit" class="btn btn-primary" style="float: right;margin-top: 15px;font-size: 14px;">Save</button>
+                </form>
+          </div>
+            
+        </div>
+      </div>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" style="border:0;width: 280px;margin: auto;">
+          <div class="modal-header">
+            <h6 class="modal-title" id="exampleModalLongTitle"><span><i class='bx bx-info-circle'></i></span> Password changed</h6>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" style="text-align: center;">
+                Please login to continue...
+          </div>
+          
+          <div class="modal-footer" style="border:0; padding-top:0;">
+             <button onclick="logout()" type="button" class="btn btn-primary" style="margin: auto;" data-dismiss="modal">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+	<script>
+	    $(document).ready(function(){
+          $("#logout").click(function(){
+            eraseCookie("usr");
+            eraseCookie("pwd");
+            eraseCookie("uty");
+            window.location.replace('index.html');
+          });
+          
+        });
+        
+        if(uty == "User"){
+	       $("#Profile").hide();
+	       $("#Register").hide();
+	    }
+		function openNav() {
+		  document.getElementById("mySidenav").style.width = "250px";
+		}
+
+		function closeNav() {
+		  document.getElementById("mySidenav").style.width = "0";
+		}
+	</script>
+	
+		<script>
+	
+	var params = new URLSearchParams(window.location.search);
+	var shopid = params.get('shop_id');
+	var addid = params.get('addid');
+    (function() {
+	  
+	  'use strict';
+		window.addEventListener('load', function() {
+			// Get the forms we want to add validation styles to
+			var forms = document.getElementsByClassName('validation');
+			// Loop over them and prevent submission
+			var validation = Array.prototype.filter.call(forms, function(form) {
+				form.addEventListener('submit', function(event) {
+				
+					event.preventDefault();
+					
+					var url = "https://jwrm01.000webhostapp.com/api/changepassword.php";
+						$.post(url, $("#passform").serialize(), function(data) {
+						
+						if(data == 'Failed'){
+					        $("#currentpassword").addClass("d-block");
+					        window.setTimeout(function() {
+					        $("#currentpassword").removeClass("d-block");
+						    }, 2000);
+						}else if(data == 'Unmatched'){
+                             $("#newpassword1").addClass("d-block");
+                             $("#newpassword2").addClass("d-block");
+					        window.setTimeout(function() {
+					        $("#newpassword1").removeClass("d-block");
+					        $("#newpassword2").removeClass("d-block");
+						    }, 2000);
+						}else if(data == 'Success'){
+						     $('#myModal').modal('toggle');
+                             $("#myModal2").modal('show');
+						}
+					});
+				}, false);
+			});
+		}, false);
+
+	})();
+	</script>
+
+	
+</body>
+</html>

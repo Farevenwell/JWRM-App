@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Solid Waste Management System</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="scripts/css/bootstrap.min.css">
+	<link rel="stylesheet" href="scripts/css/style.css">
+	<script src="scripts/js/jquery.min.js"></script>
+	<script src="scripts/js/popper.min.js"></script>
+	<script src="scripts/js/bootstrap.min.js"></script>
+	<link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+</head>
+
+<script>
+      function getCookie(cName) {
+	    const name = cName + "=";
+	    const cDecoded = decodeURIComponent(document.cookie); //to be careful
+	    const cArr = cDecoded .split('; ');
+	    let res;
+	    cArr.forEach(val => {
+		  if (val.indexOf(name) === 0) res = val.substring(name.length);
+	    })
+	    return res;
+	  }
+			
+	  function eraseCookie(name) {   
+		document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+	  }
+	  var id = getCookie('id');
+	  var usr = getCookie('usr');
+	  var pwd = getCookie('pwd');
+	  var uty = getCookie('uty');
+	  
+	  //alert(usr + " " + pwd + " " + uty);
+	  $("user").val(usr);
+	  if(usr == undefined){
+	      window.location.replace('index.html');
+	  }
+	    var params = new URLSearchParams(window.location.search);
+	    var shopid = params.get('shop_id');
+	    var addid =  params.get('addid');
+	    
+	    
+	    $.get("https://jwrm01.000webhostapp.com/api/shopinfo.php?id="+addid,function(data){
+	        var shopinfo = data.split("=");
+			document.getElementById("navinfo").innerHTML = "<img class='rounded-circle' src='Admin/shop_images/"+shopinfo[4]+"' alt='logo'><center><h4 style='color: white;'>"+shopinfo[1]+"</h4></center> <center><a href='Junkshop.html?shop_id="+shopinfo[0]+"&addid="+shopinfo[13]+"' style='padding:0;'><span style='color: white; font-size:15px;'><i class='bx bx-home'></i> Home </span></a></center>";
+        });
+        
+        $.get("https://jwrm01.000webhostapp.com/api/wastecollected.php?id="+shopid,function(data){
+		    const info = JSON.parse(data);
+		    $("#shop_id").val(shopid);
+		    if(info.data == ''){
+		        document.getElementById("noresult2").innerHTML = "<div class='col-sm alert alert-danger' style='font-size: 15px; margin: 0;'><span><i class='bx bx-error-circle'></i></span> No Buyable Items Available</div></br>";
+		    }else{	
+		        
+				for (let j = 0; j < info.length; j++) {
+				        if(info[j].Unit == 'per each'){
+				            info[j].Unit='Pieces';
+				        }else{
+				            info[j].Unit='Kilos';
+				        }
+				
+    					var html = $("<div class='column'><center><img src='api/buyimages/"+info[j].Image+"' class='img2'><p>"+info[j].Itemname+"</p></div><div class='column'><center><p style='margin: 30px; 0px;'>"+info[j].Quantity+" "+info[j].Unit+"</p></center></div>");
+    					html.appendTo('.row1');
+    					
+    				//	var select = $("<option value='"+info[j].Itemname+"'>"+info[j].Itemname+"</option>");
+				       // select.appendTo('.itemname');
+				        
+				}
+		    }
+		});
+		
+		 $.get("https://jwrm01.000webhostapp.com/api/optionitem.php?id="+shopid,function(data){
+	        const itemselect = JSON.parse(data);
+            for (let i = 0; i < itemselect.length; i++) {
+                var select = $("<option value='"+itemselect[i].Itemname+"'>"+itemselect[i].Itemname+"</option>");
+				select.appendTo('.itemname');
+            }   
+        });
+	
+		
+		function JunkerProfile(){
+		window.location.href = "JunkerProfile.html?shop_id="+shopid+"&addid=" + addid;
+    	}
+    	function WasteCollected(){
+		window.location.href = "WasteCollected.html?shop_id="+shopid+"&addid=" + addid;
+    	}
+    	function WasteCollected2(){
+		window.location.href = "WasteCollected.html?shop_id="+shopid+"&addid=" + addid;
+    	}
+    	function RegisterJunker(){
+		    window.location.href = "RegisterJunker.html?shop_id="+shopid+"&addid=" + addid;
+	    }
+    	
+</script>
+<body>
+	
+	<div id="mySidenav" class="sidenav">
+	  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a> 
+	  <div id="navinfo">
+	  
+	  </div>
+	  <ul class="list-unstyled components mb-5">
+		<li class="active">
+			<a href="ViewMap.html" id="mapping"><span><i class='bx bxs-map'></i></span> Return Map</a>
+		</li>
+		<li>
+			<a id="Register" onclick="RegisterJunker()" style="color: #818181;"> <span><i class='bx bxs-user-plus'></i></span> Register Junker</a>
+		</li>
+		<li>
+			<a id="Profile" onclick="JunkerProfile()" style="color: #818181;"><span><i class='bx bxs-user'></i></span> User Profile</a>
+		</li>
+		<li>
+			<a onclick="WasteCollected()" style="color: #818181;"><span><i class='bx bxs-box'></i></span> Waste Collected</a>
+		</li>
+		<li>
+			<a href="index.html"><span> <i class='bx bxs-door-open'></i></span> Sign Out</a>
+		</li>
+	  </ul>
+	</div>
+	
+	<nav class="navbar navbar-expand-sm navbar-dark">	  
+	  <span class="openbtn" style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;</span>
+	  <a class="navbar-brand">
+		<img src="images/RRR.png" alt="logo" style="width:40px;">
+	  </a>
+	  <span class="navbar-text">JWRM App</span>
+	</nav>
+	<div>
+			<br>
+			<div class="container">
+			    <div class="container">
+			    <p style="font-weight: bold; font-size: 18px;">Summary of Collected Waste</p>
+			    <p style="text-align: justify;">The recyclable waste that is collected in the shop is to be delivered to the other places that recycle the waste</p>
+			    <button id="insert" class="btn btn-primary" style="width:auto;border-radius: 20px; margin-bottom: 8px; background-color: #00eb00;" data-toggle="modal" data-target="#Mymodal"> Insert no. of Items <span><i class='bx bx-plus'></i></span></button>
+			    </div>
+			</div>
+			<div class="row row1">
+
+			</div>
+			
+			
+				<!-- Modal -->
+            <div class="modal fade" id="Mymodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content" style="border:0;">
+                  <div class="modal-header">
+                    <h6 class="modal-title" id="exampleModalLongTitle"><span><i class='bx bx-plus'></i></span> Insert Item</h6>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form id="form" method="POST" action="api/itemquantity.php" class="validation" required>
+                        <input type="hidden" id="shop_id" name="shop_id">
+                        <label style="margin-top: 10px;">Select Item Name</label>
+                        <select name="itemname" id="itemname" class="form-control itemname" required>
+                            <option value='' selected disabled>Select Item</option>
+                        </select>
+                       <div id="error1" class="invalid-feedback"><span><i class='bx bxs-info-circle'></i></span> Select item </div>
+                        <label style="margin-top: 10px;">Enter Quantity</label>
+                        <input type="number" id="quan" name="quan" class="form-control" placeholder="Enter no. of item" step="0.01" required>
+                        <div id="error2" class="invalid-feedback"><span><i class='bx bxs-info-circle'></i></span> Enter correct value </div>
+                        
+                        <button type="submit" id="button" class="btn btn-primary" style="float: right;margin-top: 15px;font-size: 14px;" >Save</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+    </div>
+    
+    <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+              <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content" style="border:0;">
+                  <div class="modal-header" style="padding: 8px;">
+                        <p style="margin:0; padding: 5px;"><span><i class='bx bx-info-circle' ></i></span> Message</p>
+                  </div>
+                  <div class="modal-body">
+                        <center><p> Item added successfully!</p></center>
+                  </div>
+					<center><button onclick="WasteCollected2()" class="btn01 btn-primary" style="padding: 5px; width: 80px;margin-bottom: 10px;" data-dismiss="modal">OK</button></center>
+                </div>
+              </div>
+            </div>
+		<script>
+	
+	var params = new URLSearchParams(window.location.search);
+	var shopid = params.get('shop_id');
+	var addid = params.get('addid');
+    (function() {
+	  
+	  'use strict';
+		window.addEventListener('load', function() {
+			// Get the forms we want to add validation styles to
+			var forms = document.getElementsByClassName('validation');
+			// Loop over them and prevent submission
+			var validation = Array.prototype.filter.call(forms, function(form) {
+				form.addEventListener('submit', function(event) {
+				
+					event.preventDefault();
+
+					var url = "https://jwrm01.000webhostapp.com/api/itemquantity.php";
+						$.post(url, $("#form").serialize(), function(data) {
+						if(data == 'SUCCESS'){
+						    $('#myModal1').modal();
+						}else{
+							alert("Error Occured");
+							alert(data);
+						}
+					});
+					
+				}, false);
+			});
+		}, false);
+
+	})();
+	</script>
+	
+	<script>
+	    $(document).ready(function(){
+          $("#logout").click(function(){
+            eraseCookie("usr");
+            eraseCookie("pwd");
+            eraseCookie("uty");
+            window.location.replace('index.html');
+          });
+          
+        });
+        
+       $('#insert').click(function(){
+           $('#itemname').val("");
+           $('#quan').val("");
+       });
+        
+	    if(uty == "Junker"){
+	       $("#mapping").hide();
+	    }
+	    if(uty == "User"){
+	       $("#Profile").hide();
+	       $("#insert").hide();
+	       $("#Register").hide();
+	    }
+		function openNav() {
+		  document.getElementById("mySidenav").style.width = "250px";
+		}
+
+		function closeNav() {
+		  document.getElementById("mySidenav").style.width = "0";
+		}
+		
+	
+	</script>
+	
+
+</body>
+</html>

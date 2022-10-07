@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Solid Waste Management System</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="scripts/css/bootstrap.min.css">
+	<link rel="stylesheet" href="scripts/css/style.css">
+	<script src="scripts/js/jquery.min.js"></script>
+	<script src="scripts/js/popper.min.js"></script>
+	<script src="scripts/js/bootstrap.min.js"></script>
+	 <link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+</head>
+
+	<script>
+      function getCookie(cName) {
+	    const name = cName + "=";
+	    const cDecoded = decodeURIComponent(document.cookie); //to be careful
+	    const cArr = cDecoded .split('; ');
+	    let res;
+	    cArr.forEach(val => {
+		  if (val.indexOf(name) === 0) res = val.substring(name.length);
+	    })
+	    return res;
+	  }
+			
+	  function eraseCookie(name) {   
+		document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+	  }
+	  var id = getCookie('id');
+	  var usr = getCookie('usr');
+	  var pwd = getCookie('pwd');
+	  var uty = getCookie('uty');
+	  
+	  //alert(usr + " " + pwd + " " + uty);
+	  $("user").val(usr);
+	  if(usr == undefined){
+	      window.location.replace('index.html');
+	  }
+	  
+	  $(document).ready(function(){
+	  
+			 $.get("https://jwrm01.000webhostapp.com/api/UserProfile.php?id=" + id, function(data){
+					$("#id").val(id);
+					var accounts = data.split("/");
+					$("#fname").val(accounts[1]);
+					$("#lname").val(accounts[2]);
+					$("#phone").val(accounts[3]);
+					$("#email").val(accounts[4]);
+					$("#user").val(accounts[5]);
+					$("#pass").val(accounts[6]);
+					
+					if(accounts[7] == '...'){
+						$("#str").val('');
+						$("#brgy").val('');
+						$("#city").val('');
+						$("#prov").val('');
+					}else{
+						$("#str").val(accounts[7]);
+						$("#brgy").val(accounts[8]);
+						$("#city").val(accounts[9]);
+						$("#prov").val(accounts[10]);
+
+					}
+			 });
+			 
+	  });
+	  function ViewFunction() {
+		  var x = document.getElementById("pass");
+		  if (x.type === "password") {
+			x.type = "text";
+		  } else {
+			x.type = "password";
+		  }
+	  }
+	  
+	  function myFunction(){
+		window.location.href = "EditProfile.html?id=" + id;
+	  }
+	  
+  </script>
+<body>
+		
+	<nav class="navbar navbar-expand-sm navbar-dark">	  
+		<span class="backbtn" style="font-size:30px;cursor:pointer" onclick="onclick=history.back()">&#8249;</span>
+		<a class="navbar-brand">
+			<img src="images/RRR.png" alt="logo" style="width:40px;">
+		</a>
+		<span class="navbar-text">JWRM App</span>
+	</nav>
+	</br>
+	
+	<div class="container" style="height: 0px;">
+	<div class="card mb-3 cardprofile">
+		<div class="container" style="padding: 20px 5px;">
+			<form id="updateform" method="POST" class="needs-validation" action="api/UpdateProfile.php" novalidate>
+				<div class="row">
+					<input type="hidden" id="id" name="id">
+					<div class="col-sm-3" style="margin: 5px 5px;">
+						<h6 class="mb-0" >Username</h6>
+					</div>
+					<div class="col-sm-9 input-group mb-auto">
+						<div class="input-group-prepend icon">
+							<span class="input-group-text" id="basic-addon1"><i class='bx bxs-user-circle'></i></span>
+						</div>
+							<input type="text" class="form-control" id="user" name="user" placeholder="Username" disabled>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-3" style="margin: 5px 5px;">
+						<h6 class="mb-0">Full Name</h6>
+					</div>
+					<div class="col-sm-9 input-group mb-auto">
+						<div class="input-group-prepend icon">
+							<span class="input-group-text" id="basic-addon1"><i class='bx bxs-user' ></i></span>
+						</div>
+							<input type="text" class="form-control" id="fname" name="fname" placeholder="Firstname" required>
+							<div class="invalid-feedback">Fill Out Firstname</div>
+					</div>
+					<div class="col-sm-9 input-group mb-auto">
+						<div class="input-group-prepend icon">
+							<span class="input-group-text" id="basic-addon1"><i class='bx bxs-user' ></i></span>
+						</div>
+							<input type="text" class="form-control" id="lname" name="lname" placeholder="Lastname" required>
+							<div class="invalid-feedback">Fill Out Lastname</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-3" style="margin: 5px 5px;">
+						<h6 class="mb-0">Email</h6>
+					</div>
+					<div class="col-sm-9 input-group mb-auto">
+						<div class="input-group-prepend icon">
+							<span class="input-group-text" id="basic-addon1"><i class='bx bxs-envelope' ></i></span>
+						</div>
+						<input type="email" class="form-control" id="email" name="email" placeholder="Email" required>
+						<div class="invalid-feedback">Fill Out Email! include '@' in email address</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-3" style="margin: 5px 5px;">
+						<h6 class="mb-0">Phone</h6>
+					</div>
+					<div class="col-sm-9 input-group mb-auto">
+						<div class="input-group-prepend icon">
+							<span class="input-group-text" id="basic-addon1"><i class='bx bxs-contact'></i></span>
+						</div>
+							<input type="number" class="form-control" id="phone" name="phone" placeholder="Phone Number" required>
+							<div class="invalid-feedback">Fill Out Phone Number</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-3" style="margin: 5px 5px;">
+						<h6 class="mb-0">Password</h6>
+					</div>
+					<div class="col-sm-9 input-group mb-auto">
+						<div class="input-group-prepend icon">
+							<span class="input-group-text" id="basic-addon1"><i class='bx bxs-lock-alt' ></i></span>
+						</div>
+						<input type="password" class="form-control" id="pass" name="pass" placeholder="Password" style="border-right: none;"required>
+						<a onclick="ViewFunction()"  class="btn btn-transparent eyecon">
+						<i class='bx bxs-show' style="margin-left: 0px;"></i></a>
+						<div class="invalid-feedback">Fill Out Password</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-3" style="margin: 5px 5px;">
+						<h6 class="mb-0">Address</h6>
+					</div>
+					<div class="col-sm-9 input-group mb-auto">
+						<div class="input-group-prepend icon">
+							<span class="input-group-text" id="basic-addon1"><i class='bx bxs-map'></i></span>
+						</div>
+							<select class="form-control" id="prov" name="prov" required>
+								<option value="" selected disabled>Province</option>
+								<option value="Misamis Occidental">Misamis Occidental</option>
+							</select>
+							<div class="invalid-feedback">Fill Out Province</div>
+					</div>
+					<div class="col-sm-9 input-group mb-auto">
+						<div class="input-group-prepend icon">
+							<span class="input-group-text" id="basic-addon1"><i class='bx bxs-building-house'></i></span>
+						</div>
+							<select class="form-control" id="city" name="city" required>
+							 <option value="" selected disabled>City/Municipality</option> 	
+							 <option value="Ozamiz City">Ozamiz City</option>
+							</select>
+							<div class="invalid-feedback">Fill Out City</div>
+					</div>
+					<div class="col-sm-9 input-group mb-auto">
+						<div class="input-group-prepend icon">
+							<span class="input-group-text" id="basic-addon1"><i class='bx bxs-home'></i></span>
+						</div>
+						<select class="form-control" id="brgy" name="brgy" required>
+							<option value="" selected disabled>Brgy</option>
+							<option id="ozamiz" value="Aguada">Aguada</option>
+							<option id="ozamiz" value="Bacolod">Bacolod</option>
+							<option id="ozamiz" value="Bagakay">Bagakay</option>
+							<option id="ozamiz" value="Balintawak">Balintawak</option>
+							<option id="ozamiz" value="Banadero">Banadero</option>
+							<option id="ozamiz" value="San Roque">San Roque (Baybay)</option>
+							<option id="ozamiz" value="Santa Cruz">Santa Cruz (Baybay)</option>
+							<option id="ozamiz" value="Triunfo">Triunfo (Baybay)</option>
+							<option id="ozamiz" value="Bongbong">Bongbong</option>
+							<option id="ozamiz" value="Calabayan">Calabayan</option>
+							<option id="ozamiz" value="Capucao C">Capucao C.</option>
+							<option id="ozamiz" value="Capucao P">Capucao P.</option>
+							<option id="ozamiz" value="Carmen">Carmen</option>
+							<option id="ozamiz" value="Carangan">Carangan</option>
+							<option id="ozamiz" value="Catadman-Manabay">Catadman-Manabay</option>
+							<option id="ozamiz" value="Cavinte">Cavinte</option>
+							<option id="ozamiz" value="Cogon">Cogon</option>
+							<option id="ozamiz" value="Dalapang">Dalapang</option>
+							<option id="ozamiz" value="Diguan">Diguan</option>
+							<option id="ozamiz" value="Dimaluna">Dimaluna</option>
+							<option id="ozamiz" value="Dona Consuelo">Dona Consuelo</option>
+							<option id="ozamiz" value="Embargo">Embargo</option>
+							<option id="ozamiz" value="Gala">Gala</option>
+							<option id="ozamiz" value="Gango">Gango</option>
+							<option id="ozamiz" value="Gotokan Daku">Gotokan Daku</option>
+							<option id="ozamiz" value="Gotokan Diot">Gotokan Diot</option>
+							<option id="ozamiz" value="Guimad">Guimad</option>
+							<option id="ozamiz" value="Guingona">Guingona</option>
+							<option id="ozamiz" value="Kinuman Norte">Kinuman Norte</option>
+							<option id="ozamiz" value="Kinuman Sur">Kinuman Sur</option>
+							<option id="ozamiz" value="Labinay">Labinay</option>
+							<option id="ozamiz" value="Labo">Labo</option>
+							<option id="ozamiz" value="Lam-an">Lam-an</option>
+							<option id="ozamiz" value="Liposong">Liposong</option>
+							<option id="ozamiz" value="Litapan">Litapan</option>
+							<option id="ozamiz" value="Malaubang">Malaubang</option>
+							<option id="ozamiz" value="Manaka">Manaka</option>
+							<option id="ozamiz" value="Maningcol">Maningcol</option>
+							<option id="ozamiz" value="Mentering">Mentering</option>
+							<option id="ozamiz" value="Molicay">Molicay</option>
+							<option id="ozamiz" value="Pantaon">Pantaon</option>
+							<option id="ozamiz" value="Pulot">Pulot</option>
+							<option id="ozamiz" value="San Antonio">San Antonio</option>
+							<option id="ozamiz" value="Sangay Daku">Sangay Daku</option>
+							<option id="ozamiz" value="Sangay Diot">Sangay Diot</option>
+							<option id="ozamiz" value="Sinuza">Sinuza</option>
+							<option id="ozamiz" value="Montol">Montol</option>
+							<option id="ozamiz" value="Tabid">Tabid</option>
+							<option id="ozamiz" value="Trigos">Trigos</option>
+							<option id="ozamiz" value="Tinago">Tinago</option>
+						</select>
+						
+						<div class="invalid-feedback">Fill Out Barangay</div>
+					</div>
+					<div class="col-sm-9 input-group mb-auto">
+						<div class="input-group-prepend icon">
+							<span class="input-group-text" id="basic-addon1"><i class='bx bx-street-view'></i></span>
+						</div>
+							<input type="text" class="form-control" id="str" name="str" placeholder="Street" required>
+							<div class="invalid-feedback">Fill Out Street</div>
+					</div>
+					
+							
+				</div>
+				<div class="row">
+					<div class="col-sm-12">
+						<button type="submit" class="btn btn-primary" style="margin-top: 10px; width:100%;">Save</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	</div>
+			<div class="container">
+				<div class="container">
+					<div class="row">
+						<div id="confirmation" class="col-sm alert alert-success invisible" style="font-size: 15px;">
+							<span><i class='bx bx-like'></i></span> Update Successfully!
+						</div>
+					</div>
+				</div>
+			</div>
+	
+	</br>
+	<script>
+    (function() {
+	  
+	  'use strict';
+	  window.addEventListener('load', function() {
+		// Get the forms we want to add validation styles to
+		var forms = document.getElementsByClassName('needs-validation');
+		// Loop over them and prevent submission
+		var validation = Array.prototype.filter.call(forms, function(form) {
+		  form.addEventListener('submit', function(event) {
+			if (form.checkValidity() === false) {
+			  event.preventDefault();
+			  event.stopPropagation();
+			}
+			else {
+				event.preventDefault();
+
+                var url = "https://jwrm01.000webhostapp.com/api/UpdateProfile.php";
+					$.post(url, $("#updateform").serialize(), function(data) {
+					
+					if(data == 'Update Failed'){
+						alert('UPDATE FAILED PLEASE TRY AGAIN');
+						
+					}else{
+						$(".cardprofile").addClass("invisible");
+						$("#confirmation").removeClass("invisible");
+						$("#confirmation").fadeOut(5000);
+						window.location.replace('UserProfile.html');
+					}
+				});
+                
+			}
+			form.classList.add('was-validated');
+		  }, false);
+		});
+	  }, false);
+
+	})();
+	</script>
+	
+</body>
+</html>

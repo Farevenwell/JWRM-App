@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Solid Waste Management System</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="scripts/css/bootstrap.min.css">
+	<link rel="stylesheet" href="scripts/css/style.css">
+	<script src="scripts/js/jquery.min.js"></script>
+	<script src="scripts/js/popper.min.js"></script>
+	<script src="scripts/js/bootstrap.min.js"></script>
+	<link href='https://unpkg.com/boxicons@2.0.7/css/boxicons.min.css' rel='stylesheet'>
+</head>
+	<script>
+      function getCookie(cName) {
+	    const name = cName + "=";
+	    const cDecoded = decodeURIComponent(document.cookie); //to be careful
+	    const cArr = cDecoded .split('; ');
+	    let res;
+	    cArr.forEach(val => {
+		  if (val.indexOf(name) === 0) res = val.substring(name.length);
+	    })
+	    return res;
+	  }
+			
+	  function eraseCookie(name) {   
+		document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+	  }
+	  var id = getCookie('id');
+	  var usr = getCookie('usr');
+	  var pwd = getCookie('pwd');
+	  var uty = getCookie('uty');
+	  
+	  //alert(usr + " " + pwd + " " + uty);
+	  $("user").val(usr);
+	  if(usr == undefined){
+	      window.location.replace('index.html');
+	  }
+	  
+	  $(document).ready(function(){
+		var url = document.URL;
+		var itemid = url.substring(url.lastIndexOf('=') + 1);
+		console.log(itemid);
+			 $.get("https://jwrm01.000webhostapp.com/api/getsellItem.php?id=" + itemid, function(data){
+			 
+					var items = data.split("=");
+					$("#itemid").val(items[0]);
+					$("#itemid2").val(items[0]);
+					$("#itemname").val(items[1]);
+					$("#name").text(items[1]);
+					$("#price").val(items[2]);
+					$("#unit").val(items[3]);
+					$("#fileimg").val(items[4]);
+					var myimg = document.getElementById('itemimg');
+					console.log(items[4]);
+					myimg.innerHTML="<img src='api/sellimages/"+items[4]+"' class='img2'>";
+			 });
+			 
+	  });
+	  var params = new URLSearchParams(window.location.search);
+	  var shopid = params.get('shop_id');
+	  var addid = params.get('addid');
+	  console.log(addid);
+	  function viewsellitems(){
+	      window.location.href="ViewSellItems.html?shop_id="+ shopid +"&addid="+addid;
+	  }
+	  
+	  if(uty == "User"){
+        window.location.replace('index.html');
+	  }
+	 </script>
+	 
+<body>
+		
+	<nav class="navbar navbar-expand-sm navbar-dark">	  
+	  <span class="backbtn" style="font-size:30px;cursor:pointer" onclick="viewsellitems()">&#8249;</span>
+	  <a class="navbar-brand">
+		<img src="images/RRR.png" alt="logo" style="width:40px;">
+	  </a>
+	  <span class="navbar-text">JWRM App</span>
+	</nav>
+	
+	<div class="container" style="height: 0px;">
+	</br>
+	<div class="container" style="height: 0px;">
+		<div class="container">
+		    <br>
+		    <br>
+			<div class="row">
+				<div id="confirmation" class="col-sm alert alert-success invisible" style="font-size: 15px;">
+					<span><i class='bx bx-like'></i></span> Item Updated!
+				</div>
+				<div id="confirmation2" class="col-sm alert alert-success invisible" style="font-size: 15px;">
+					<span><i class='bx bx-like'></i></span> Item Deleted! 
+				</div>
+			    <div id="confirmation_failed" class="col-sm alert alert-danger invisible" style="font-size: 15px;">
+					<span><i class='bx bx-error-circle'></i></span>Item Update Failed!
+			    </div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="card mb-3 cardprofile" id="cardhide">
+		<div class="card-body">
+		<center><div class="container" id="itemimg"></div>
+				<p id="name"></p></center>
+		<form id="updateform" action="api/UpdateSellItem.php" method="POST" class="needs-validation" novalidate>
+			<input type="hidden" id="itemid" name="itemid">
+			  <div class="form-group">
+				<label for="itemname">Item Name</label>
+				<input type="text" class="form-control" id="itemname" name="itemname" placeholder="Example: Bottles" required>
+				<div class="invalid-feedback"> <span><i class='bx bxs-error'></i></span>Fill out item name</div>
+			  </div>
+			  <div class="form-group">
+				<label for="price">Price</label>
+				<input type="number" class="form-control" id="price" name="price" step="0.01" placeholder="Example: 1.00" required>
+				<div class="invalid-feedback"> <span><i class='bx bxs-error'></i></span> Fill out price</div>
+			  </div>
+			  <div class="form-group">
+				<label for="price">Unit</label>
+				<select class="form-control" id="unit" name="unit" required>
+                    <option value="per kilo">per kilo</option>
+                    <option value="per each">per each</option>
+				</select>
+				</br>
+			  </div>
+			  <button type="submit" class="btn01 btn-primary" style="width: 100px;">Save</button>
+			  <button type="button" data-toggle="modal" data-target="#myModal" class="btn01 btn-danger" style="float: right;width: 100px;">Delete</button>
+		</form>
+			  
+		</div>
+	</div>
+	</div>
+	
+	<div class="modal fade" id="myModal">
+		<div class="modal-dialog modal-dialog-centered">
+		  <div class="modal-content" style="border:none;">
+		  
+			<!-- Modal Header -->
+			<div class="modal-header" style="padding: 8px;">
+			  <p style="color: red; margin:0; padding: 5px;"><span><i class='bx bxs-error'></i></span> Warning!</p>
+			  <button type="button" class="close" data-dismiss="modal" style="color: white;">&times;</button>
+			</div>
+			<form id="deleteform" action="api/deleteSellItem.php" method="POST" class="validation" novalidate>
+				<!-- Modal body -->
+				<div class="modal-body">
+					<input type="hidden" id="itemid2" name="itemid2">
+					<input type="hidden" id="fileimg" name="fileimg">
+					<center><p style="margin: 0; padding: 8px;" >Are you sure to delete this item?</p></center>
+				</div>
+				
+				<div class="modal-footer" style="padding: 8px;">
+					<button type="submit" class="btn01 btn-danger" style="padding: 5px; width: 50px;">Yes</button>
+					<button type="button" class="btn01 btn-primary" style="padding: 5px; width: 50px;" data-dismiss="modal">No</button>
+				</div>
+			</form>
+		  </div>
+		
+		</div>
+	</div>
+
+	<script>
+	var params = new URLSearchParams(window.location.search);
+	var shopid = params.get('shop_id');
+	var addid = params.get('addid');
+	
+    (function() {
+	  
+	  'use strict';
+	  window.addEventListener('load', function() {
+		// Get the forms we want to add validation styles to
+		var forms = document.getElementsByClassName('needs-validation');
+		// Loop over them and prevent submission
+		var validation = Array.prototype.filter.call(forms, function(form) {
+		  form.addEventListener('submit', function(event) {
+			if (form.checkValidity() === false) {
+			  event.preventDefault();
+			  event.stopPropagation();
+			}else {
+				event.preventDefault();
+
+				var url = "https://jwrm01.000webhostapp.com/api/UpdateSellItem.php";
+					$.post(url, $("#updateform").serialize(), function(data) {
+					if(data == 'SUCCESS'){
+						$("#cardhide").addClass("invisible");
+						$("#confirmation").removeClass("invisible");
+						window.setTimeout(function() {
+							window.location.href = 'ViewSellItems.html?shop_id='+shopid+'&addid='+addid;
+						}, 500);
+
+						
+					}else{
+						$("#confirmation").hide();
+						$("#confirmation2").hide();
+						$("#confirmation_failed").show();
+						$("#confirmation_failed").removeClass("invisible");
+						$("#confirmation_failed").fadeOut(5000);
+					}
+				});
+			}
+			form.classList.add('was-validated');
+		  }, false);
+		});
+	  }, false);
+
+	})();
+	</script>
+	
+	<script>
+	
+	var params = new URLSearchParams(window.location.search);
+	var shopid = params.get('shop_id');
+    (function() {
+	  
+	  'use strict';
+		window.addEventListener('load', function() {
+			// Get the forms we want to add validation styles to
+			var forms = document.getElementsByClassName('validation');
+			// Loop over them and prevent submission
+			var validation = Array.prototype.filter.call(forms, function(form) {
+				form.addEventListener('submit', function(event) {
+				
+					event.preventDefault();
+
+					var url = "https://jwrm01.000webhostapp.com/api/deleteSellItem.php";
+						$.post(url, $("#deleteform").serialize(), function(data) {
+						if(data == 'SUCCESS'){
+							$("#myModal").modal('hide');
+							$("#cardhide").addClass("invisible");
+							$("#confirmation").hide();
+							$("#confirmation2").removeClass("invisible");
+							window.setTimeout(function() {
+								window.location.href = 'ViewSellItems.html?shop_id='+shopid+'&addid='+addid;
+							}, 500);
+						}else{
+							alert("Error Occured");
+						}
+					});
+					
+				}, false);
+			});
+		}, false);
+
+	})();
+	</script>
+	
+</body>
+</html> 
